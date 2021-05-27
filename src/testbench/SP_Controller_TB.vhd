@@ -8,14 +8,14 @@ entity SP_Controller_TB is
 end entity SP_Controller_TB;
 
 architecture main of SP_Controller_TB is
-  constant TESTCASE_COUNT: integer := 4; 
+  constant TESTCASE_COUNT: integer := 5;
   constant WORD_SIZE: integer := 32;
 
   constant SP_PUSH: std_logic := '0'; 
-  constant SP_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0002";
+  constant SP_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"FFFF_FFFE";
 
   constant SP_POP: std_logic := '1'; 
-  constant SP_POP_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"FFFF_FFFE";
+  constant SP_POP_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0002";
 
   -- Default value specified in the document (2^32-2)
   constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"40_00_00_00";
@@ -24,13 +24,14 @@ architecture main of SP_Controller_TB is
   type push_or_pop_t is array (0 to TESTCASE_COUNT-1) of std_logic;
   type SP_out_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
 
-  constant test_enable: enable_t := ('1', '0', '1', '0');
-  constant test_push_or_pop: push_or_pop_t := (SP_PUSH, SP_POP, SP_POP, SP_POP);
+  constant test_enable: enable_t := ('1', '1', '1', '0', '0');
+  constant test_push_or_pop: push_or_pop_t := (SP_PUSH, SP_POP, SP_POP, SP_POP, SP_PUSH);
   constant test_SP_out: SP_out_t := (
     SP_DEFAULT,
     SP_DEFAULT + SP_PUSH_INCREMENT,
-    SP_DEFAULT + SP_PUSH_INCREMENT,
-    SP_DEFAULT
+    SP_DEFAULT,
+    SP_DEFAULT + SP_POP_INCREMENT,
+    SP_DEFAULT + SP_POP_INCREMENT
   );
 
   signal s_enable: std_logic;
@@ -52,30 +53,23 @@ begin
 
     process begin
       s_reset <= '1';
-      wait for 50 ns;
-
-      assert (s_SP_out = SP_DEFAULT)
-      report "FAIL: case reset" 
-        & "SP = " & to_hstring(s_SP_out)
-        & ", expected " & to_hstring(SP_DEFAULT)
-      severity error;
+      wait for 50 ps;
       s_reset <= '0';
 
       for i in 0 to TESTCASE_COUNT-1 loop
         s_enable <= test_enable(i);
         s_push_or_pop <= test_push_or_pop(i);
-        wait for 50 ns;
 
         s_clk <= '0';
-        wait for 50 ns;
+        wait for 50 ps;
         s_clk <= '1';
-        wait for 50 ns;
 
         assert (s_SP_out = test_SP_out(i))
         report "FAIL: case " & integer'image(i)
-          & "\nSP = " & to_hstring(s_SP_out)
-          & ", expected " & to_hstring(SP_DEFAULT)
+          & " SP = " & to_hstring(s_SP_out)
+          & ", expected " & to_hstring(test_SP_out(i))
         severity error;
+        wait for 50 ps;
       end loop;
       wait;
     end process;
