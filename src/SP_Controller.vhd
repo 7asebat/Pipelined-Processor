@@ -32,17 +32,19 @@ begin
     if (reset = '1') then
       SP_value <= SP_DEFAULT;
 
-    elsif (rising_edge(clk) and enable = '1') then
-      case push_or_pop is 
-        when SP_PUSH =>
-          SP_value <= SP_value + SP_PUSH_INCREMENT;
+    elsif (rising_edge(clk)) then
+      SP_out <= SP_value;
+      if (enable = '1') then
+        case push_or_pop is 
+          when SP_PUSH =>
+            SP_value <= SP_value + SP_PUSH_INCREMENT;
 
-        when SP_POP =>
-          SP_value <= SP_value + SP_POP_INCREMENT;
+          when SP_POP =>
+            SP_value <= SP_value + SP_POP_INCREMENT;
 
-        when others => null;
-      end case;
+          when others => null;
+        end case;
+      end if;
     end if;
   end process;
-  SP_out <= SP_value;
 end architecture main;

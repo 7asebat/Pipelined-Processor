@@ -55,19 +55,22 @@ begin
       s_reset <= '0';
 
       for i in 0 to TESTCASE_COUNT-1 loop
+        -- Start with a rising edge
+        s_clk <= '0';
+
         s_enable <= test_enable(i);
         s_push_or_pop <= test_push_or_pop(i);
-
-        s_clk <= '0';
         wait for 50 ps;
+
+        -- Read previous state on a rising edge
         s_clk <= '1';
+        wait for 50 ps;
 
         assert (s_SP_out = test_SP_out(i))
         report "FAIL: case " & integer'image(i)
           & " SP = " & to_hstring(s_SP_out)
           & ", expected " & to_hstring(test_SP_out(i))
         severity error;
-        wait for 50 ps;
       end loop;
       wait;
     end process;

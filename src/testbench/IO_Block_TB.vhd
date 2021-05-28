@@ -43,13 +43,16 @@ begin
 
     process begin
       for i in 0 to TESTCASE_COUNT-1 loop
+        -- Start with a rising edge
+        s_clk <= '0';
+
         s_control_in <= test_control(i)(0);
         s_control_out <= test_control(i)(1);
         s_signal_in <= test_signal_in(i);
         s_write_in <= test_write_in(i);
-
-        s_clk <= '0';
         wait for 50 ps;
+
+        -- Read previous state on a rising edge
         s_clk <= '1';
         wait for 50 ps;
 

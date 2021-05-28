@@ -35,7 +35,6 @@ begin
     if (rising_edge(clk)) then
       regA_data <= reg_file(idx(read_regA_ID));
       regB_data <= reg_file(idx(read_regB_ID));
-
     end if;
 
     -- Write to file on falling edge
