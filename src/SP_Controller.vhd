@@ -7,9 +7,9 @@ use IEEE.std_logic_unsigned.all;
 entity SP_Controller is
   generic (WORD_SIZE: integer := 32);
 
-  port (enable: in std_logic;
+  port (clk: in std_logic;
+        enable: in std_logic;
         reset: in std_logic;
-        clk: in std_logic;
         push_or_pop: in std_logic;
         SP_out: out std_logic_vector(WORD_SIZE-1 downto 0));
 

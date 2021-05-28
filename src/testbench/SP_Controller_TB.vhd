@@ -43,9 +43,9 @@ architecture main of SP_Controller_TB is
 begin
   sp_controller: entity work.SP_Controller 
     generic map (WORD_SIZE)
-    port map (enable => s_enable,
+    port map (clk => s_clk,
+              enable => s_enable,
               reset => s_reset,
-              clk => s_clk,
               push_or_pop => s_push_or_pop,
               SP_out => s_SP_out);
 
