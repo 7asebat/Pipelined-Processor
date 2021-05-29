@@ -114,6 +114,6 @@ flags_out(1) <= N_out;
 flags_out(2) <= Z_out;
 
 -- map result
-result <= OpF(WORDSIZE-1 DOWNTO 0);
+result <= OpF(WORD_SIZE-1 DOWNTO 0);
 
 END ARCHITECTURE;
