@@ -28,43 +28,44 @@ SIGNAL Z_out: std_logic;
 SIGNAL N_out: std_logic;
 SIGNAL C_out: std_logic;
 
-SIGNAL OpF: std_logic_vector(32 DOWNTO 0); 
+SIGNAL OpF: std_logic_vector(WORD_SIZE DOWNTO 0); 
+
+SIGNAL SHR_RESULT : std_logic_vector(WORD_SIZE DOWNTO 0);
 
 BEGIN
 
+SHR_RESULT <= (std_logic_vector(shift_right(unsigned(OpB & '0'), to_integer(unsigned(OpA)))));
+
 WITH S(3 DOWNTO 0) SELECT
-  OpF <=  (OTHERS => '0')                                   WHEN "0000", -- CLR
-          ('0' & not(OpB))                                  WHEN "0001", -- NOT OpB
-          (std_logic_vector(unsigned(OpB) + 1))             WHEN "0010", -- INC OpB
-          (std_logic_vector(unsigned(OpB) - 1))             WHEN "0011", -- DEC OpB
-          (std_logic_vector(unsigned(not(OpB)) + 1))        WHEN "0100", -- NEG OpB
-          ('0' & OpB(30 DOWNTO 0) & C_in)                   WHEN "0101", -- RLC OpB
-          ('0' & C_in & OpB(31 DOWNTO 1))                   WHEN "0110", -- RRC OpB
-          ('0' & OpA)                                       WHEN "0111", -- MOV OpA, OpB
-          (std_logic_vector(unsigned(OpA) + unsigned(OpB))) WHEN "1000", -- ADD OpA, OpB
-          (std_logic_vector(unsigned(OpA) - unsigned(OpB))) WHEN "1001", -- SUB OpA, OpB
-          ('0' & (OpA and OpB))                             WHEN "1010", -- AND OpA, OpB
-          ('0' & (OpA or OpB))                              WHEN "1011", -- OR  OpA, OpB
-          (std_logic_vector(shift_left(unsigned(OpB), to_integer(unsigned(OpA)))))  WHEN "1100", -- SHL OpB, Imm
-          (std_logic_vector(shift_right(unsigned(OpB), to_integer(unsigned(OpA))))) WHEN "1101", -- SHR OpB, Imm
+  OpF <=  (OTHERS => '0')                                           WHEN "0000", -- CLR
+          ('0' & not(OpB))                                          WHEN "0001", -- NOT OpB
+          (std_logic_vector(unsigned('0' & OpB) + 1))               WHEN "0010", -- INC OpB
+          (std_logic_vector(unsigned('0' & OpB) - 1))               WHEN "0011", -- DEC OpB
+          (std_logic_vector(unsigned(not('0' & OpB)) + 1))          WHEN "0100", -- NEG OpB
+          ('0' & OpB(WORD_SIZE-2 DOWNTO 0) & C_in)                  WHEN "0101", -- RLC OpB
+          ('0' & C_in & OpB(WORD_SIZE-1 DOWNTO 1))                  WHEN "0110", -- RRC OpB
+          ('0' & OpA)                                               WHEN "0111", -- MOV OpA, OpB
+          (std_logic_vector('0' & (unsigned(OpA) + unsigned(OpB)))) WHEN "1000", -- ADD OpA, OpB
+          (std_logic_vector('0' & (unsigned(OpA) - unsigned(OpB)))) WHEN "1001", -- SUB OpA, OpB
+          ('0' & (OpA and OpB))                                     WHEN "1010", -- AND OpA, OpB
+          ('0' & (OpA or OpB))                                      WHEN "1011", -- OR  OpA, OpB
+          (std_logic_vector(shift_left(unsigned('0' & OpB), to_integer(unsigned(OpA)))))  WHEN "1100", -- SHL OpB, Imm
+          (SHR_RESULT(0) & SHR_RESULT(WORD_SIZE DOWNTO 1)) WHEN "1101", -- SHR OpB, Imm
           (OTHERS => 'U') WHEN OTHERS;
 
-WITH OpF(3 DOWNTO 0) SELECT
-  Z <= '0' WHEN "0000",
-       '1' WHEN OTHERS;
-
-N <= ('1') WHEN signed(OpF) < 0 ELSE '1';
+Z <= ('1') WHEN unsigned(OpF(WORD_SIZE-1 DOWNTO 0)) = 0 ELSE '0';
+N <= ('1') WHEN signed(OpF(WORD_SIZE-1 DOWNTO 0)) < 0 ELSE '0';
 
 WITH S(3 DOWNTO 0) SELECT
   C <=  
-    (OpF(32)) WHEN "0010", -- INC OpB
-    (OpF(32)) WHEN "0011", -- DEC OpB
-    (OpB(31)) WHEN "0101", -- RLC OpB
+    (OpF(WORD_SIZE)) WHEN "0010", -- INC OpB
+    (OpF(WORD_SIZE)) WHEN "0011", -- DEC OpB
+    (OpB(WORD_SIZE-1)) WHEN "0101", -- RLC OpB
     (OpB(0))  WHEN "0110", -- RRC OpB
-    (OpB(32)) WHEN "1000", -- ADD OpA, OpB
-    (OpB(32)) WHEN "1001", -- SUB OpA, OpB
-    (OpB(32)) WHEN "1100", -- SHL OpB, Imm
-    (OpB(32)) WHEN "1101", -- SHR OpB, Imm
+    (OpF(WORD_SIZE)) WHEN "1000", -- ADD OpA, OpB
+    (OpF(WORD_SIZE)) WHEN "1001", -- SUB OpA, OpB
+    (OpF(WORD_SIZE)) WHEN "1100", -- SHL OpB, Imm
+    (OpF(WORD_SIZE)) WHEN "1101", -- SHR OpB, Imm
     ('U') WHEN OTHERS;
 
 WITH S(3 DOWNTO 0) SELECT
