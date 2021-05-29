@@ -26,7 +26,7 @@ architecture main of Flags_File_TB is
 
 
 begin
-  reg_file: entity work.Flags_File
+  flag_file: entity work.Flags_File
     port map (
       clk => s_clk,
       flags_en => s_flags_en, 
