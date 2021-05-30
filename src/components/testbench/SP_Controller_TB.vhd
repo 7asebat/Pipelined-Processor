@@ -47,28 +47,28 @@ begin
               push_or_pop => s_push_or_pop,
               SP_out => s_SP_out);
 
-    process begin
-      s_reset <= '1';
+  process begin
+    s_reset <= '1';
+    wait for 50 ps;
+    s_reset <= '0';
+
+    for i in 0 to TESTCASE_COUNT-1 loop
+      -- Start with a rising edge
+      s_clk <= '0';
+
+      s_push_or_pop <= test_push_or_pop(i);
       wait for 50 ps;
-      s_reset <= '0';
 
-      for i in 0 to TESTCASE_COUNT-1 loop
-        -- Start with a rising edge
-        s_clk <= '0';
+      -- Read previous state on a rising edge
+      s_clk <= '1';
+      wait for 50 ps;
 
-        s_push_or_pop <= test_push_or_pop(i);
-        wait for 50 ps;
-
-        -- Read previous state on a rising edge
-        s_clk <= '1';
-        wait for 50 ps;
-
-        assert (s_SP_out = test_SP_out(i))
-        report "FAIL: case " & integer'image(i)
-          & " SP = " & to_hstring(s_SP_out)
-          & ", expected " & to_hstring(test_SP_out(i))
-        severity error;
-      end loop;
-      wait;
-    end process;
+      assert (s_SP_out = test_SP_out(i))
+      report "FAIL: case " & integer'image(i)
+        & " SP = " & to_hstring(s_SP_out)
+        & ", expected " & to_hstring(test_SP_out(i))
+      severity error;
+    end loop;
+    wait;
+  end process;
 end architecture main;
