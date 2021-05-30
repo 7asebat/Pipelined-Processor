@@ -2,10 +2,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
+use work.Utility_Pack.all;
 
 entity IO_Block is
-  generic (WORD_SIZE: integer := 32);
-
   port (clk: in std_logic;
         control_in: in std_logic;
         control_out: in std_logic;

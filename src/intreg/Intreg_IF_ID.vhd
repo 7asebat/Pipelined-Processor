@@ -5,8 +5,6 @@ use IEEE.std_logic_unsigned.all;
 use work.utility_pack.all;
 
 entity Intreg_IF_ID is
-  generic (WORD_SIZE: integer := 32);
-
   port (clk: in std_logic;
         en: in std_logic;
         rst: in std_logic;

@@ -8,7 +8,6 @@ entity Intreg_IF_ID_TB is
 end entity;
 
 architecture main of Intreg_IF_ID_TB is
-  constant WORD_SIZE: integer := 32;
   constant TESTCASE_COUNT: integer := 5;
 
   -- (EN, RST)
@@ -54,7 +53,6 @@ architecture main of Intreg_IF_ID_TB is
 
 begin
   intreg: entity work.Intreg_IF_ID
-    generic map (WORD_SIZE)
     port map (clk => s_clk,
               en => s_en,
               rst => s_rst,

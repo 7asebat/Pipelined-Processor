@@ -9,9 +9,7 @@ end entity Register_File_TB;
 
 architecture main of Register_File_TB is
   constant TESTCASE_COUNT: integer := 5;
-  constant WORD_SIZE: integer := 32;
   constant REG_COUNT: integer := 8;
-  constant REG_ADR_WIDTH: integer := 3;
 
   type control_t is array (0 to TESTCASE_COUNT-1) of std_logic;
   type word_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
@@ -50,7 +48,6 @@ architecture main of Register_File_TB is
 
 begin
   reg_file: entity work.Register_File
-    generic map (WORD_SIZE, REG_COUNT, REG_ADR_WIDTH)
     port map (clk => s_clk,
               write_en => s_write_en, 
               read_regA_ID => s_read_regA_ID,

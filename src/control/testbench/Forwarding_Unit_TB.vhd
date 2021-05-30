@@ -9,8 +9,6 @@ end entity Forwarding_Unit_TB;
 
 architecture main of Forwarding_Unit_TB is
   constant TESTCASE_COUNT: integer := 5;
-  constant WORD_SIZE: integer := 32;
-  constant REG_ADR_WIDTH: integer := 3;
 
   type word_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
   type adr_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(REG_ADR_WIDTH-1 downto 0);
@@ -72,7 +70,6 @@ architecture main of Forwarding_Unit_TB is
 
 begin
   forwarding_unit: entity work.Forwarding_Unit
-    generic map (WORD_SIZE, REG_ADR_WIDTH)
     port map (EX_regA_ID => s_EX_regA_ID,
               EX_regB_ID => s_EX_regB_ID,
               WB_regB_ID => s_WB_regB_ID,

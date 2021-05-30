@@ -22,7 +22,6 @@ architecture main of PC_Increment_Control_TB is
 
 begin
   pic: entity work.PC_Increment_Control
-    generic map (IR_SIZE)
     port map (IR => s_IR,
               increment => s_increment);
 

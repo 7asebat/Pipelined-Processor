@@ -9,7 +9,6 @@ end entity SP_Controller_TB;
 
 architecture main of SP_Controller_TB is
   constant TESTCASE_COUNT: integer := 5;
-  constant WORD_SIZE: integer := 32;
 
   constant SP_PUSH: std_logic_vector(1 downto 0) := b"00";
   constant SP_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"FFFF_FFFE";
@@ -41,7 +40,6 @@ architecture main of SP_Controller_TB is
 
 begin
   sp_controller: entity work.SP_Controller 
-    generic map (WORD_SIZE)
     port map (clk => s_clk,
               reset => s_reset,
               push_or_pop => s_push_or_pop,

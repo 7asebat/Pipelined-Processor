@@ -2,48 +2,12 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
+use work.Utility_Pack.all;
 
 -- TODO(Abdelrahman) Extract all constants into one package
 entity Control_Unit is
-  generic (IR_SIZE: integer := 32;
-           ALU_FUNCT_SIZE: integer := 4);
-  port (
-    IR: in std_logic_vector(IR_SIZE-1 downto 0);
-
-    -- PC source control signals
-    RET_PC_SRC_CTRL: out std_logic;
-
-    -- Register write enable
-    Reg_write: out std_logic;
-    -- Memory write enable
-    Mem_write: out std_logic;
-
-    is_lw: out std_logic; 
-    is_CALL: out std_logic;
-    is_RET: out std_logic;
-
-    is_CALL_or_RET: out std_logic;
-
-    -- High if instruction is J-type (including CALL)
-    -- schematic: J?
-    is_J_type: out std_logic;
-
-    SP_push_or_pop: out std_logic_vector(1 downto 0);
-
-    Flags_set: out std_logic_vector(2 downto 0);
-    Flags_reset: out std_logic_vector(2 downto 0);
-    Flags_enable: out std_logic;
-
-    ALU_op1_src: out std_logic_vector(1 downto 0);
-    ALU_op2_src: out std_logic_vector(1 downto 0);
-    ALU_funct: out std_logic_vector(ALU_FUNCT_SIZE-1 downto 0);
-
-    IO_in: out std_logic;
-    IO_out: out std_logic;
-
-    -- Source of WB stage
-    WB_source: out std_logic_vector(1 downto 0)
-  );
+  port (IR: in std_logic_vector(IR_SIZE-1 downto 0);
+        control_signals: out control_signals_t);
 end entity Control_Unit;
 
 architecture main of Control_Unit is
@@ -108,31 +72,31 @@ begin
     opcode_type = TYPE_J else 
   '0';
 
-  is_J_type <= s_is_J_type;
+  control_signals.is_J_type <= s_is_J_type;
 
   s_is_LW <= '1' when 
     opcode(5 downto 1) = BITS_LW else 
   '0';
 
-  is_LW <= s_is_LW;
+  control_signals.is_LW <= s_is_LW;
 
   s_is_CALL <= '1' when 
     opcode = OP_CALL else 
   '0';
 
-  is_CALL <= s_is_CALL;
+  control_signals.is_CALL <= s_is_CALL;
 
   s_is_RET <= '1' when 
     opcode = OP_RET else 
   '0';
 
-  is_RET <= s_is_RET;
+  control_signals.is_RET <= s_is_RET;
 
-  is_CALL_or_RET <= s_is_CALL or s_is_RET;
+  control_signals.is_CALL_or_RET <= s_is_CALL or s_is_RET;
 
-  RET_PC_SRC_CTRL <= s_is_RET;
+  control_signals.RET_PC_SRC_CTRL <= s_is_RET;
 
-  SP_push_or_pop <= OP_PUSH(1 downto 0) when 
+  control_signals.SP_push_or_pop <= OP_PUSH(1 downto 0) when 
     opcode = OP_PUSH else OP_POP(1 downto 0) 
     when opcode = OP_POP else
   b"11";
@@ -140,34 +104,34 @@ begin
   -- POP
   -- LW
   -- (R/I) & Main ALU
-  Reg_write <= '1' when 
+  control_signals.Reg_write <= '1' when 
     opcode = OP_POP or 
     s_is_LW = '1' or
     (opcode_type = TYPE_R and opcode_ALU = ALU_Main) or
     (opcode_type = TYPE_I and opcode_ALU = ALU_Main) else
   '0';
 
-  Mem_write <= '1' when
+  control_signals.Mem_write <= '1' when
     opcode = OP_STD or
     opcode = OP_PUSH or
     opcode = OP_CALL else
   '0';
 
-  Flags_set <= b"001" when
+  control_signals.Flags_set <= b"001" when
     (opcode_type = TYPE_C and opcode(1 downto 0) = BITS_SET) else
   b"000";
 
-  Flags_reset <= b"001" when
+  control_signals.Flags_reset <= b"001" when
     (opcode_type = TYPE_C and opcode(1 downto 0) = BITS_CLR) else
   b"000";
 
   -- (R/I) & Main ALU
-  Flags_enable <= '1' when
+  control_signals.Flags_enable <= '1' when
     (opcode_type = TYPE_R and opcode_ALU = ALU_Main) or
     (opcode_type = TYPE_I and opcode_ALU = ALU_Main) else
   '0';
 
-  ALU_op1_src <= 
+  control_signals.ALU_op1_src <= 
     OP1_Ra when (opcode_type = TYPE_R and opcode_Opc = OPC_Double_Op) 
             or opcode = OP_STD 
             or opcode = OP_LDD 
@@ -181,7 +145,7 @@ begin
     else
     b"11";
 
-  ALU_op2_src <= 
+  control_signals.ALU_op2_src <= 
     OP2_Rb when (opcode_type = TYPE_R and opcode_ALU = ALU_Main)
            or   (opcode_type = TYPE_I and opcode(1 downto 0) = b"00") 
     else
@@ -193,16 +157,16 @@ begin
     else
     OP2_Two;
 
-  ALU_funct <= IR_ALU_funct;
+  control_signals.ALU_funct <= IR_ALU_funct;
 
-  IO_in <= '1' when opcode = OP_IN else
+  control_signals.IO_in <= '1' when opcode = OP_IN else
   '0';
 
-  IO_out <= '1' when opcode = OP_OUT else
+  control_signals.IO_out <= '1' when opcode = OP_OUT else
   '0';
 
   -- TODO(Abdelrahman) Replace I-type condition, the long ugly one
-  WB_source <=
+  control_signals.WB_source <=
     WBS_ALU when opcode_type = TYPE_R
             or   (opcode_type = TYPE_I and opcode(1 downto 0) = b"00") 
     else

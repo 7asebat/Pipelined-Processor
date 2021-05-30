@@ -9,7 +9,6 @@ end entity IO_Block_TB;
 
 architecture main of IO_Block_TB is
   constant TESTCASE_COUNT: integer := 3;
-  constant WORD_SIZE: integer := 32;
 
   type control_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(0 to 1);
   type word_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
@@ -32,7 +31,6 @@ architecture main of IO_Block_TB is
 
 begin
   io_block: entity work.IO_Block
-    generic map (WORD_SIZE)
     port map (clk => s_clk,
               control_in => s_control_in,
               control_out => s_control_out,

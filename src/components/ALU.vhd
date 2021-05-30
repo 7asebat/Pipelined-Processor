@@ -1,9 +1,9 @@
 Library ieee;
 Use ieee.std_logic_1164.all;
 Use ieee.numeric_std.all;
+use work.Utility_Pack.all;
 
 ENTITY ALU IS 
-	GENERIC(WORD_SIZE: INTEGER := 32);
 	PORT(
 			OpA, OpB: IN std_logic_vector(WORD_SIZE-1 DOWNTO 0);
 			result: OUT std_logic_vector(WORD_SIZE-1 DOWNTO 0);

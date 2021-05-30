@@ -2,11 +2,9 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 use IEEE.std_logic_unsigned.all;
+use work.Utility_Pack.all;
 
 entity Forwarding_Unit is 
-  generic (WORD_SIZE: integer := 32;
-           REG_ADR_WIDTH: integer := 3);
-
   port (EX_regA_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
         EX_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
         WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);

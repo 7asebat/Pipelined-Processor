@@ -9,7 +9,6 @@ end entity ALU_TB;
 
 architecture main of ALU_TB is
   constant TESTCASE_COUNT: integer := 23;
-  constant WORD_SIZE: integer := 32;
 
   type flags_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(2 downto 0);
   type op_t is array(0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
@@ -72,7 +71,6 @@ architecture main of ALU_TB is
   signal s_flags_out: std_logic_vector(2 downto 0);
 begin
   alu: entity work.ALU
-    generic map(WORD_SIZE)
     port map (
       OpA => s_OpA, 
       OpB => s_OpB,

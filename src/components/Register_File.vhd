@@ -5,10 +5,6 @@ use IEEE.std_logic_unsigned.all;
 use work.utility_pack.all;
 
 entity Register_File is
-  generic (WORD_SIZE: integer := 32;
-           REG_COUNT: integer := 8;
-           REG_ADR_WIDTH: integer := 3);
-
   port (clk: in std_logic;
         write_en: in std_logic;
 
