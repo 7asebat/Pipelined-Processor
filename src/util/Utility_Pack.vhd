@@ -15,6 +15,7 @@ package Utility_Pack is
   constant IR_SIZE: integer := 32;
   constant REG_ADR_WIDTH: integer := 3;
   constant REG_COUNT: integer := 8;
+  constant FLAGS_COUNT: integer := 3;
 
   constant SP_PUSH: std_logic_vector(1 downto 0) := b"00";
   constant SP_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"FFFF_FFFE";
@@ -61,6 +62,26 @@ package Utility_Pack is
     -- Source of WB stage
     WB_source: std_logic_vector(1 downto 0);
   end record control_signals_t;
+
+  constant CTRL_NOP: control_signals_t := (
+    RET_PC_SRC_CTRL => '0',
+    Reg_write => '0',
+    Mem_write => '0',
+    is_lw => '0',
+    is_CALL => '0',
+    is_RET => '0',
+    is_CALL_or_RET => '0',
+    is_J_type => '0',
+    SP_push_or_pop => b"11",
+    Flags_set => b"000",
+    Flags_reset => b"000",
+    Flags_enable => '0',
+    ALU_op1_src => b"00",
+    ALU_op2_src => b"00",
+    ALU_funct => (OTHERS => '0'),
+    IO_in => '0',
+    IO_out => '0',
+    WB_source => b"11");
 
 end package Utility_Pack;
 

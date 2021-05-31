@@ -9,7 +9,6 @@ end entity PC_Increment_Control_TB;
 
 architecture main of PC_Increment_Control_TB is
   constant TESTCASE_COUNT: integer := 3;
-  constant IR_SIZE: integer := 32;
 
   type word_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(IR_SIZE-1 downto 0);
   type control_t is array (0 to TESTCASE_COUNT-1) of std_logic;

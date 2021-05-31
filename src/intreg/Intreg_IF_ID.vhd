@@ -29,9 +29,9 @@ begin
 
   process(clk, rst) begin
     if (rst = '1') then
-      s_return_adr <= (OTHERS => '0');
+      s_return_adr <= (others => '0');
       s_IR(WORD_SIZE-1 downto WORD_SIZE-6) <= OP_NOP; 
-      s_IR(WORD_SIZE-7 downto 0) <= (OTHERS => '0'); -- NOP
+      s_IR(WORD_SIZE-7 downto 0) <= (others => '0'); -- NOP
 
     elsif (rising_edge(clk) and en = '1') then
       s_return_adr <= load_return_adr;

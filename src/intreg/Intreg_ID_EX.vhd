@@ -47,14 +47,13 @@ begin
   process(clk, rst) begin
     -- TODO(Abdelrahman) Reset this register properly
     if (rst = '1') then
-      s_return_adr <= (OTHERS => '0');
-      s_control_signals <= (OTHERS => '0');
-      s_return_adr <= (OTHERS => '0');
-      s_imm_value <= (OTHERS => '0');
-      s_regA_ID <= (OTHERS => '0');
-      s_regB_ID <= (OTHERS => '0');
-      s_regA_data <= (OTHERS => '0');
-      s_regB_data <= (OTHERS => '0');
+      s_control_signals <= CTRL_NOP;
+      s_return_adr <= (others => '0');
+      s_imm_value <= (others => '0');
+      s_regA_ID <= (others => '0');
+      s_regB_ID <= (others => '0');
+      s_regA_data <= (others => '0');
+      s_regB_data <= (others => '0');
 
     elsif (rising_edge(clk) and en = '1') then
       s_control_signals <= load_control_signals;

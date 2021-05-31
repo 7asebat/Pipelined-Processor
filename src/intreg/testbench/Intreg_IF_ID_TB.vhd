@@ -41,12 +41,12 @@ architecture main of Intreg_IF_ID_TB is
                                x"CCCC_0000",
                                x"EEEE_0000");
 
-  signal s_load_return_adr: std_logic_vector(WORD_SIZE-1 downto 0);
-  signal s_load_IR: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_clk: std_logic;
   signal s_en: std_logic;
   signal s_rst: std_logic;
 
+  signal s_load_return_adr: std_logic_vector(WORD_SIZE-1 downto 0);
+  signal s_load_IR: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_return_adr: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_IR: std_logic_vector(WORD_SIZE-1 downto 0);
 

@@ -1,5 +1,6 @@
 library IEEE;
 use IEEE.std_logic_1164.all;
+use work.Utility_Pack.all;
 
 ENTITY Flags_File IS
   -- 2: Z
@@ -7,10 +8,10 @@ ENTITY Flags_File IS
   -- 0: C
   PORT (
       clk: IN std_logic;
-      flags_in: IN std_logic_vector(2 DOWNTO 0);
-      flags_set: IN std_logic_vector(2 DOWNTO 0);
-      flags_reset: IN std_logic_vector(2 DOWNTO 0);
-      flags_out: OUT std_logic_vector(2 DOWNTO 0);
+      flags_in: IN std_logic_vector(FLAGS_COUNT-1 DOWNTO 0);
+      flags_set: IN std_logic_vector(FLAGS_COUNT-1 DOWNTO 0);
+      flags_reset: IN std_logic_vector(FLAGS_COUNT-1 DOWNTO 0);
+      flags_out: OUT std_logic_vector(FLAGS_COUNT-1 DOWNTO 0);
       flags_en: IN std_logic
   );
 
@@ -20,7 +21,7 @@ ARCHITECTURE main OF Flags_File IS
 BEGIN
   PROCESS(clk, flags_set, flags_reset) BEGIN
     IF (rising_edge(clk)) THEN
-      FOR i IN 0 TO 2 LOOP
+      FOR i IN 0 TO FLAGS_COUNT-1 LOOP
         IF(flags_set(i) = '1') THEN
           flags_out(i) <= '1';
         ELSIF(flags_reset(i) = '1') THEN
