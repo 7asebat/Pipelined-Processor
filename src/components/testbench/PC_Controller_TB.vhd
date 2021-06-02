@@ -9,7 +9,6 @@ END ENTITY PC_Controller_TB;
 
 ARCHITECTURE main OF PC_Controller_TB IS
     CONSTANT TESTCASE_COUNT : INTEGER := 10;
-    CONSTANT WORD_SIZE : INTEGER := 32;
     TYPE PC_out_t IS ARRAY (0 TO TESTCASE_COUNT - 1) OF STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     TYPE logic_t IS ARRAY (0 TO TESTCASE_COUNT - 1) OF STD_LOGIC;
     CONSTANT test_enable : logic_t := ('1', '1', '1', '1', '1', '1', '1', '1', '1', '0');
@@ -44,7 +43,6 @@ ARCHITECTURE main OF PC_Controller_TB IS
 
 BEGIN
     pc_controller : ENTITY work.PC_Controller
-        GENERIC MAP(WORD_SIZE)
         PORT MAP(
             clk => s_clk,
             en => s_enable,

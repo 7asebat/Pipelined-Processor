@@ -2,9 +2,9 @@ LIBRARY IEEE;
 USE IEEE.std_logic_1164.ALL;
 USE IEEE.numeric_std.ALL;
 USE IEEE.std_logic_unsigned.ALL;
+USE work.utility_pack.ALL;
 
 ENTITY PC_Controller IS
-    GENERIC (WORD_SIZE : INTEGER := 32);
     PORT (
         j_pc_src_ctrl : IN STD_LOGIC;
         ret_pc_src_ctrl : IN STD_LOGIC;
