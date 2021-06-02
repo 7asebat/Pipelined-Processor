@@ -6,33 +6,33 @@ use work.utility_pack.all;
 
 -- NOTE(Abdelrahman) return_adr is fed directly from one intermediate register to another
 entity Stage_Execute is
-    port (
-        clk: in std_logic;
-        rst: in std_logic;
+port (
+    clk: in std_logic;
+    rst: in std_logic;
 
-        control_signals: in control_signals_t;
+    control_signals: in control_signals_t;
 
-        imm_value: in std_logic_vector(WORD_SIZE-1 downto 0);
-        regA_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        regA_data: in std_logic_vector(WORD_SIZE-1 downto 0);
-        regB_data: in std_logic_vector(WORD_SIZE-1 downto 0);
+    imm_value: in std_logic_vector(WORD_SIZE-1 downto 0);
+    regA_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+    regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+    regA_data: in std_logic_vector(WORD_SIZE-1 downto 0);
+    regB_data: in std_logic_vector(WORD_SIZE-1 downto 0);
 
-        -- Feedback values
-        WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        MEM_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        MEM_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
-        WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+    -- Feedback values
+    WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+    MEM_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+    MEM_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+    WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
 
-        flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
-        ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
-        IO_load: out std_logic_vector(WORD_SIZE-1 downto 0);
-        forward_regB_data: out std_logic_vector(WORD_SIZE-1 downto 0);
-        J_PC_SRC_CTRL: out std_logic;
+    flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
+    ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
+    IO_load: out std_logic_vector(WORD_SIZE-1 downto 0);
+    forward_regB_data: out std_logic_vector(WORD_SIZE-1 downto 0);
+    J_PC_SRC_CTRL: out std_logic;
 
-        IO_signal_in: in std_logic_vector(WORD_SIZE-1 downto 0);
-        IO_signal_out: out std_logic_vector(WORD_SIZE-1 downto 0)
-    );
+    IO_signal_in: in std_logic_vector(WORD_SIZE-1 downto 0);
+    IO_signal_out: out std_logic_vector(WORD_SIZE-1 downto 0)
+);
 end entity Stage_Execute;
 
 architecture main of Stage_Execute is

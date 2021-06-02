@@ -5,24 +5,24 @@ use IEEE.std_logic_unsigned.all;
 use work.utility_pack.all;
 
 entity Stage_Fetch is
-    port (
-        clk: in std_logic;
-        rst: in std_logic;
+port (
+    clk: in std_logic;
+    rst: in std_logic;
 
-        -- Disables the PC if high
-        enable_n: in std_logic;
+    -- Disables the PC if high
+    enable_n: in std_logic;
 
-        -- PC source selectors
-        J_PC_SRC_CTRL: in std_logic;
-        RET_PC_SRC_CTRL: in std_logic;
+    -- PC source selectors
+    J_PC_SRC_CTRL: in std_logic;
+    RET_PC_SRC_CTRL: in std_logic;
 
-        -- Feedback values
-        jmp_address: in std_logic_vector(WORD_SIZE-1 downto 0);
-        WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+    -- Feedback values
+    jmp_address: in std_logic_vector(WORD_SIZE-1 downto 0);
+    WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
 
-        return_adr: out std_logic_vector(WORD_SIZE-1 downto 0);
-        IR: out std_logic_vector(WORD_SIZE-1 downto 0)
-    );
+    return_adr: out std_logic_vector(WORD_SIZE-1 downto 0);
+    IR: out std_logic_vector(WORD_SIZE-1 downto 0)
+);
 end entity Stage_Fetch;
 
 architecture main of Stage_Fetch is

@@ -3,12 +3,12 @@ Use ieee.std_logic_1164.all;
 use work.Utility_Pack.all;
 
 entity PC_Source_Control is
-    port (
-        flags: in std_logic_vector(FLAGS_COUNT-1 downto 0);
-        is_J_type: in std_logic;
-        JMP_flag: in std_logic_vector(1 downto 0);
-        J_PC_SRC_CTRL: out std_logic
-    );
+port (
+    flags: in std_logic_vector(FLAGS_COUNT-1 downto 0);
+    is_J_type: in std_logic;
+    JMP_flag: in std_logic_vector(1 downto 0);
+    J_PC_SRC_CTRL: out std_logic
+);
 end entity PC_Source_Control;
 
 

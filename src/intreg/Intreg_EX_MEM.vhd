@@ -5,27 +5,29 @@ use IEEE.std_logic_unsigned.all;
 use work.utility_pack.all;
 
 entity Intreg_EX_MEM is
-  port (clk: in std_logic;
-        en: in std_logic;
-        rst: in std_logic;
+port (
+  clk: in std_logic;
+  en: in std_logic;
+  rst: in std_logic;
 
-        -- NOTE(Abdelrahman) We don't need all control signals here but this
-        -- gives a cleaner port layout
-        load_control_signals: in control_signals_t;
-        load_flags: in std_logic_vector(FLAGS_COUNT-1 downto 0);
-        load_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
-        load_return_adr: in std_logic_vector(WORD_SIZE-1 downto 0);
-        load_regB_data: in std_logic_vector(WORD_SIZE-1 downto 0);
-        load_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        load_IO_load: in std_logic_vector(WORD_SIZE-1 downto 0);
+  -- NOTE(Abdelrahman) We don't need all control signals here but this
+  -- gives a cleaner port layout
+  load_control_signals: in control_signals_t;
+  load_flags: in std_logic_vector(FLAGS_COUNT-1 downto 0);
+  load_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+  load_return_adr: in std_logic_vector(WORD_SIZE-1 downto 0);
+  load_regB_data: in std_logic_vector(WORD_SIZE-1 downto 0);
+  load_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+  load_IO_load: in std_logic_vector(WORD_SIZE-1 downto 0);
 
-        control_signals: out control_signals_t;
-        flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
-        ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
-        return_adr: out std_logic_vector(WORD_SIZE-1 downto 0);
-        regB_data: out std_logic_vector(WORD_SIZE-1 downto 0);
-        regB_ID: out std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        IO_load: out std_logic_vector(WORD_SIZE-1 downto 0));
+  control_signals: out control_signals_t;
+  flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
+  ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
+  return_adr: out std_logic_vector(WORD_SIZE-1 downto 0);
+  regB_data: out std_logic_vector(WORD_SIZE-1 downto 0);
+  regB_ID: out std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+  IO_load: out std_logic_vector(WORD_SIZE-1 downto 0)
+);
 
 end entity Intreg_EX_MEM;
 
