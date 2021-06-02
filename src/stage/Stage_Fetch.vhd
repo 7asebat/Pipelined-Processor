@@ -66,6 +66,8 @@ begin
 
     instruction_memory: entity work.Memory
     port map (
+        -- NOTE(Abdelrahman) no need to watch for a rising edge as this is a read-only memory
+        clk => '0',
         address => s_instruction_address,
         data_out => s_IR,
         write_data => (others => '0'),
