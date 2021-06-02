@@ -28,7 +28,7 @@ def write_no_op(bit_string, Memory, curr_addr):
     return curr_addr
 
 
-def process_instruction(ins: list[str], bit_string: str, Memory: dict[str, str], curr_addr: int, index: int) -> int:
+def process_instruction(ins, bit_string, Memory, curr_addr: int, index: int):
     bit_string += Instruction_Opcode_Funct[ins[0]]
 
     # NOTE(Abdelrahman) bit_string should be 16 bits here

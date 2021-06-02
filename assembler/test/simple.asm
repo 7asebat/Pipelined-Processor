@@ -1,9 +1,6 @@
-clr r0
-mov r1, r2
-shl r3, -4
-shr r4, 32
-ldd r1, -16(r2)
-call r5
-clrc
-ret
+ldm r0, 5
+ldm r1, 10
+ldm r2, -2
+add r0, r1
+add r1, r2
 nop

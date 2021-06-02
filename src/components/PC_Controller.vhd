@@ -43,7 +43,7 @@ BEGIN
         adder_out <= adder_address_in + 1 WHEN '0',
         adder_address_in + 2 WHEN OTHERS;
 
-    PROCESS (clk)
+    PROCESS (clk, reset)
     BEGIN
         IF (reset = '1') THEN
             PC_value <= PC_DEFAULT;
