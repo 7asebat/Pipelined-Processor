@@ -33,7 +33,7 @@ def sanitize_label(key, value, labels, Memory):
             offset = labels[label] - (key + 1)
             if not -128 <= offset <= 127:
                 print('Offset out of range for label {label}')
-                sys.exit(1)
+                raise ValueError
             newValue = value.replace('{' + label + '}', '000' + f"{offset & 0xFF:08b}")
         # Updating Memory Value
         Memory[key] = newValue

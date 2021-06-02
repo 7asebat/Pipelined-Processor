@@ -59,4 +59,4 @@ write_memory_to_file(Memory, 'memory.bin')
 write_mem_file(fn, Memory)
 
 if len(sys.argv) == 2:
-    write_do_file(fn, f'mem load -i ./{fn}.mem /processor/RAM/ram')
+    write_do_file(fn)

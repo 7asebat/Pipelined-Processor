@@ -38,6 +38,7 @@ ARCHITECTURE main OF Stage_Fetch IS
 BEGIN
     -- TODO(Abdelrahman) Change this to use enable directly
     s_enable <= NOT enable_n;
+    IR <= s_IR;
 
     -- Instantiate components
     pc_inc_control : ENTITY work.PC_Increment_Control

@@ -7,100 +7,40 @@ def write_memory_to_file(Memory, filePath):
 
 def write_mem_file(fn, Memory):
     with open(f'{fn}.mem', 'w') as f:
-        f.write("// memory data file (do not edit the following line - required for mem load use)\n// instance=/processor/RAM/ram\n// format=mti addressradix=h dataradix=s version=1.0 wordsperline=4")
+        f.write(r'''// memory data file (do not edit the following line - required for mem load use)
+// instance=/processor/fetch/instruction_memory/ram
+// format=mti addressradix=h dataradix=s version=1.0 wordsperline=4''')
         for k, v in enumerate(Memory.items()):
             if(v[0] % 4 == 0):
                 f.write(f'\n{v[0]:x}: ')
             f.write('{val} '.format(val=v[1]))
 
 
-def write_do_file(fn, memoryImport):
+def write_do_file(fn):
     with open(f'{fn}.do', 'w') as f:
         f.write(fr'''
-vsim work.processor
+restart
 
-{memoryImport}
+mem load -i {fn}.mem -filltype value -filldata 0 /processor/fetch/instruction_memory/ram 
 
-add wave -dec -position insertpoint \
-\
-sim:/processor/Rx_out(7) \
-sim:/processor/CTRL_COUNTER_out \
-sim:/processor/uPC_out \
-\
--dec \
-sim:/processor/MDR_out \
-sim:/processor/MAR_out \
-\
--bin \
-{{sim:/processor/Rstatus_out[2:0]}} \
-\
--dec \
-sim:/processor/Rx_out \
+force -freeze sim:/Processor/IO_in 16#00000000 0
+force -freeze sim:/Processor/IO_out 16#00000000 0
+force -freeze sim:/processor/clk 0 0
+force -freeze sim:/processor/reset 1 0
+force -freeze sim:/Processor/s_IFID_reset 1 0
+force -freeze sim:/Processor/s_IDEX_reset 1 0
+force -freeze sim:/Processor/s_EXMEM_reset 1 0
+force -freeze sim:/Processor/s_MEMWB_reset 1 0
+run 50ps;
 
-# bin \
-# sim:/processor/ALU_flags \
-# sim:/processor/ALU_F \
-# sim:/processor/ALU_Cin \
-
-# -dec \
-# sim:/processor/INT_SRC_out \
-# sim:/processor/INT_DST_out \
-
-# -hex \
-# sim:/processor/CTRL_SIGNALS \
-# sim:/processor/uIR_sig \
-# sim:/processor/IR_out \
-# sim:/processor/shared_bus \
-# sim:/processor/WMFC \
-# sim:/processor/MFC \
-# sim:/processor/RUN \
-# sim:/processor/clk \
-# sim:/processor/MIU_read \
-# sim:/processor/MIU_write \
-# sim:/processor/MIU_mem_write \
-# sim:/processor/MIU_mem_read \
-
-# sim:/processor/MDR_REGISTER/A_en \
-# sim:/processor/MDR_REGISTER/A_in \
-# sim:/processor/MDR_REGISTER/B_en \
-# sim:/processor/MDR_REGISTER/B_in \
-# sim:/processor/RAM/dataIn \
-# sim:/processor/RAM/dataOut \
-
-force -freeze sim:/processor/clk 1 0
-force -freeze sim:/processor/uPC_reset 1 0
-force -freeze sim:/processor/MIU_reset 1 0
-force -freeze sim:/processor/Rz_reset 1 0
-force -freeze sim:/processor/Ry_reset 1 0
-force -freeze sim:/processor/Rstatus_reset 1 0
-force -freeze sim:/processor/MDR_reset 1 0
-force -freeze sim:/processor/MAR_reset 1 0
-force -freeze sim:/processor/IR_reset 1 0
-force -freeze sim:/processor/INT_SRC_reset 1 0
-force -freeze sim:/processor/INT_DST_reset 1 0
-force -freeze sim:/processor/INTERRUPT_reset 1 0
-force -freeze sim:/processor/HALT_reset 1 0
-force -freeze sim:/processor/CTRL_COUNTER_reset 1 0
-force -freeze sim:/processor/Rx_reset 11111111 0
-run
-
-noforce sim:/processor/uPC_reset
-noforce sim:/processor/MIU_reset
-noforce sim:/processor/Rz_reset
-noforce sim:/processor/Ry_reset
-noforce sim:/processor/Rx_reset
-noforce sim:/processor/Rstatus_reset
-noforce sim:/processor/MDR_reset
-noforce sim:/processor/MAR_reset
-noforce sim:/processor/IR_reset
-noforce sim:/processor/INT_SRC_reset
-noforce sim:/processor/INT_DST_reset
-noforce sim:/processor/INTERRUPT_reset
-noforce sim:/processor/HALT_reset
-noforce sim:/processor/CTRL_COUNTER_reset
-noforce sim:/processor/Rx_reset
+noforce sim:/Processor/IO_in
+noforce sim:/Processor/IO_out
+noforce sim:/Processor/s_IFID_reset
+noforce sim:/Processor/s_IDEX_reset
+noforce sim:/Processor/s_EXMEM_reset
+noforce sim:/Processor/s_MEMWB_reset
+force -freeze sim:/processor/reset 0 0
 force -freeze sim:/processor/clk 1 0, 0 {{50 ps}} -r 100
-
 run 16ns;
 ''')
 
