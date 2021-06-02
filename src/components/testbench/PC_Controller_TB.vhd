@@ -23,22 +23,36 @@ ARCHITECTURE main OF PC_Controller_TB IS
     SIGNAL j_ctrl : STD_LOGIC;
     SIGNAL ret_ctrl : STD_LOGIC;
     SIGNAL address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
+    SIGNAL s_return_adr : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     SIGNAL inc_sel : STD_LOGIC;
     SIGNAL wb : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0) := X"0001_1001";
     SIGNAL jmp_addr : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0) := X"1111_1111";
-    SIGNAL def : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0) := x"0000_0000";
 
-    CONSTANT test_PC_out : PC_out_t := (
-        def,
-        def + 1,
-        def + 3,
-        wb,
+    -- Values asserted before rising edge
+    CONSTANT test_return_adr : PC_out_t := (
+        PC_DEFAULT + 1,
+        PC_DEFAULT + 2,
+        PC_DEFAULT + 3,
         wb + 1,
         wb + 3,
-        jmp_addr,
+        wb + 4,
         jmp_addr + 1,
         jmp_addr + 3,
-        jmp_addr + 3
+        jmp_addr + 4,
+        jmp_addr + 5
+    );
+
+    CONSTANT test_PC_out : PC_out_t := (
+        PC_DEFAULT, -- Reset forces DEFAULT
+        PC_DEFAULT + 2,
+        PC_DEFAULT + 3,
+        wb,  -- Selection forces the WB
+        wb + 3,
+        wb + 4,
+        jmp_addr, -- Selection forces JMPADR
+        jmp_addr + 3,
+        jmp_addr + 4,
+        jmp_addr + 4 -- !Enable forces the value down
     );
 
 BEGIN
@@ -52,26 +66,29 @@ BEGIN
             wb_result => wb,
             jmp_address => jmp_addr,
             reset => s_reset,
-            default_val => def,
+            return_adr => s_return_adr,
             inst_address => address
         );
 
     PROCESS BEGIN
         FOR i IN 0 TO TESTCASE_COUNT - 1 LOOP
             -- Start with a rising edge
-            s_reset <= test_reset(i);
-            s_enable <= test_enable(i);
-            inc_sel <= test_inc_sel(i);
-            j_ctrl <= test_jmp_addr(i);
-            ret_ctrl <= test_wb(i);
+            s_clk <= '0';
+                s_reset <= test_reset(i);
+                s_enable <= test_enable(i);
+                inc_sel <= test_inc_sel(i);
+                j_ctrl <= test_jmp_addr(i);
+                ret_ctrl <= test_wb(i);
+            WAIT FOR 50 ps;
+
+            ASSERT (s_return_adr = test_return_adr(i))
+            REPORT "FAIL: case " & INTEGER'image(i)
+                & " Pre-rising Return Address = " & to_hstring(s_return_adr)
+                & ", expected " & to_hstring(test_return_adr(i))
+                SEVERITY error;
 
             s_clk <= '1';
             WAIT FOR 50 ps;
-
-            -- Read previous state on a rising edge
-            s_clk <= '0';
-            WAIT FOR 50 ps;
-
             ASSERT (address = test_PC_out(i))
             REPORT "FAIL: case " & INTEGER'image(i)
                 & " PC = " & to_hstring(address)

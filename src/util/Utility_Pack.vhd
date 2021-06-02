@@ -26,6 +26,8 @@ package Utility_Pack is
   -- Default value specified in the document (2^32-2)
   constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"4000_0000";
 
+  constant PC_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0000";
+
   -- Struct
   type control_signals_t is record
     -- PC source control signals

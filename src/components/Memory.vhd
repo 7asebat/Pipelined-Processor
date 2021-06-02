@@ -12,7 +12,7 @@ ENTITY Memory IS
   PORT(
     address: IN std_logic_vector(integer(ceil(log2(real(n))))-1 DOWNTO 0);
     data_out: OUT std_logic_vector((m*2)-1 DOWNTO 0);
-     write_data: IN std_logic_vector((m*2) -1 DOWNTO 0);
+    write_data: IN std_logic_vector((m*2) -1 DOWNTO 0);
     mem_write: IN std_logic
   ); 
 END ENTITY;
