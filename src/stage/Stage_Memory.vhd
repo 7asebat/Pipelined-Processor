@@ -42,6 +42,7 @@ BEGIN
       m => 16
     )
     PORT MAP(
+      clk => clk,
       address => Mem_Address,
       write_data => Write_Data,
       mem_write => Mem_Write,
