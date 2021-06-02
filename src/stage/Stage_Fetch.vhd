@@ -32,6 +32,7 @@ ARCHITECTURE main OF Stage_Fetch IS
     SIGNAL s_increment : STD_LOGIC;
     SIGNAL s_instruction_address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     SIGNAL s_return_address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
+    SIGNAL s_pc_instruction_address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
 
     CONSTANT PC_DEFAULT : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0) := X"0000_0000";
 
@@ -61,9 +62,18 @@ BEGIN
             jmp_address => jmp_address,
 
             return_adr => s_return_address,
-            inst_address => s_instruction_address
+            inst_address => s_pc_instruction_address,
+
+            PC_DEFAULT => s_IR
         );
+
     return_adr <= s_return_address;
+
+    WITH (rst) SELECT
+    s_instruction_address <=
+        s_pc_instruction_address WHEN '0',
+        (OTHERS => '0') WHEN '1',
+        (OTHERS => 'U') WHEN OTHERS;
 
     instruction_memory : ENTITY work.Memory
         PORT MAP(

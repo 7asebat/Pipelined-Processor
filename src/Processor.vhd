@@ -86,7 +86,7 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_IFID_enable <= NOT s_ID_enable_n;
+  s_IFID_enable <= NOT s_ID_enable_n OR reset;
   s_IFID_reset <= (
     s_EX_control_signals.is_CALL_or_RET OR
     s_MEM_control_signals.is_RET OR

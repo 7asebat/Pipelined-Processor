@@ -14,7 +14,7 @@ ENTITY PC_Controller IS
         wb_result : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
         jmp_address : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
         reset : IN STD_LOGIC;
-
+        PC_DEFAULT : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
         return_adr : OUT STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
         inst_address : OUT STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0)
     );
