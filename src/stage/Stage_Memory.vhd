@@ -7,7 +7,6 @@ USE work.utility_pack.ALL;
 ENTITY Stage_Memory IS
   PORT (
     clk : IN STD_LOGIC;
-    reset : IN STD_LOGIC;
 
     ALU_Result : INOUT STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     Return_Adr : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
@@ -18,7 +17,6 @@ ENTITY Stage_Memory IS
     is_CALL : IN STD_LOGIC;
     Mem_Write : IN STD_LOGIC;
 
-    reset_signal : OUT STD_LOGIC;
     Memory_Load : OUT STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0)
   );
 END ENTITY Stage_Memory;
@@ -28,16 +26,6 @@ ARCHITECTURE main OF Stage_Memory IS
   SIGNAL Mem_Address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
   SIGNAL Read_Data : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
 BEGIN
-
-  reset_signal <= reset;
-
-  data_mem_adr_control : ENTITY work.Data_Mem_Adr_Control
-    PORT MAP(
-      clk => clk,
-      reset_signal => reset,
-      load_adr => ALU_Result,
-      adr => Mem_Address
-    );
 
   data_memory : ENTITY work.Memory
     GENERIC MAP(
@@ -58,5 +46,6 @@ BEGIN
     Return_Adr WHEN '1',
     (OTHERS => 'U') WHEN OTHERS;
 
+  Mem_Address <= ALU_Result;
   Memory_Load <= Read_Data;
 END main;
