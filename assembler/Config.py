@@ -81,10 +81,10 @@ class Instruction_Prefix:
         STD = "100110"
 
     class J_type:
-        JZ = "010000"
-        JN = "010001"
-        JC = "010010"
-        JMP = "010011"
+        JZ = "010011"
+        JN = "010010"
+        JC = "010001"
+        JMP = "010000"
         CALL = "010100"
         RET = "010101"
 

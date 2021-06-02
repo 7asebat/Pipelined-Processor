@@ -28,6 +28,15 @@ package Utility_Pack is
 
   constant PC_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0000";
 
+  constant FLAGS_Z: integer := 2;
+  constant FLAGS_N: integer := 1;
+  constant FLAGS_C: integer := 0;
+
+  constant JMP_Z: std_logic_vector(1 downto 0) := b"11";
+  constant JMP_N: std_logic_vector(1 downto 0) := b"10";
+  constant JMP_C: std_logic_vector(1 downto 0) := b"01";
+  constant JMP_Unconditional: std_logic_vector(1 downto 0) := b"00";
+
   -- Struct
   type control_signals_t is record
     -- PC source control signals
@@ -47,6 +56,13 @@ package Utility_Pack is
     -- High if instruction is J-type (including CALL)
     -- schematic: J?
     is_J_type:  std_logic;
+
+    -- Flag to check for jump condition
+    -- 00: Unconditional
+    -- 01: C
+    -- 10: N
+    -- 11: Z
+    JMP_flag: std_logic_vector(1 downto 0);
 
     SP_push_or_pop:  std_logic_vector(1 downto 0);
 
@@ -74,6 +90,7 @@ package Utility_Pack is
     is_RET => '0',
     is_CALL_or_RET => '0',
     is_J_type => '0',
+    JMP_flag => b"00",
     SP_push_or_pop => b"11",
     Flags_set => b"000",
     Flags_reset => b"000",
@@ -83,7 +100,8 @@ package Utility_Pack is
     ALU_funct => (OTHERS => '0'),
     IO_in => '0',
     IO_out => '0',
-    WB_source => b"11");
+    WB_source => b"11"
+  );
 
 end package Utility_Pack;
 

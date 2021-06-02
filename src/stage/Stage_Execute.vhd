@@ -21,13 +21,14 @@ entity Stage_Execute is
         -- Feedback values
         WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
         MEM_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
-        MEM_ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
-        WB_result: out std_logic_vector(WORD_SIZE-1 downto 0);
+        MEM_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+        WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
 
         flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
         ALU_result: out std_logic_vector(WORD_SIZE-1 downto 0);
         IO_load: out std_logic_vector(WORD_SIZE-1 downto 0);
         forward_regB_data: out std_logic_vector(WORD_SIZE-1 downto 0);
+        J_PC_SRC_CTRL: out std_logic;
 
         IO_signal_in: in std_logic_vector(WORD_SIZE-1 downto 0);
         IO_signal_out: out std_logic_vector(WORD_SIZE-1 downto 0)
@@ -35,6 +36,8 @@ entity Stage_Execute is
 end entity Stage_Execute;
 
 architecture main of Stage_Execute is
+    signal s_SP_out: std_logic_vector(WORD_SIZE-1 downto 0);
+
     signal s_ALU_OpA: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_ALU_OpB: std_logic_vector(WORD_SIZE-1 downto 0);
 
@@ -44,10 +47,19 @@ architecture main of Stage_Execute is
     signal s_fu_A: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_fu_B: std_logic_vector(WORD_SIZE-1 downto 0);
 
-    constant ALU_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) = x"0000_0000";
-    constant ALU_POP_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) = x"0000_0002";
+    constant ALU_PUSH_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := x"0000_0000";
+    constant ALU_POP_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := x"0000_0002";
 
 begin
+    -- SP
+    spc: entity work.SP_Controller
+    port map (
+        clk => clk,
+        reset => rst,
+        push_or_pop => control_signals.SP_push_or_pop,
+        SP_out => s_SP_out
+    );
+
     -- ALU
     with control_signals.ALU_op1_src select
     s_ALU_OpA <= s_fu_A    when "00",
@@ -109,7 +121,12 @@ begin
         signal_out => IO_signal_out
     );
 
-    -- TODO(Abdelrahman) Implement and integrate the PC Source Controller
-
+    pc_src_ctrl: entity work.PC_Source_Control
+    port map (
+        flags => s_Flags_file_ALU,
+        is_J_type => control_signals.is_J_type,
+        JMP_flag => control_signals.JMP_flag,
+        J_PC_SRC_CTRL => J_PC_SRC_CTRL
+    );
 
 end main;

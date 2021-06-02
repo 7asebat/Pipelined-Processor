@@ -15,11 +15,13 @@ architecture main of Control_Unit is
   -- type opcode_t is std_logic_vector(5 downto 0);
   -- type funct_t is std_logic_vector(ALU_FUNCT_SIZE-1 downto 0);
 
-  alias opcode: std_logic_vector(5 downto 0) is IR(IR_SIZE-1 downto IR_SIZE-6);
-  alias opcode_type: std_logic_vector(1 downto 0) is IR(5 downto 4);
-  alias opcode_ALU: std_logic is opcode(2);
-  alias opcode_Opc: std_logic is opcode(3); -- Op count
   alias IR_ALU_funct: std_logic_vector(ALU_FUNCT_SIZE-1 downto 0) is IR(IR_SIZE-7 downto IR_SIZE-10);
+
+  alias opcode: std_logic_vector(5 downto 0) is IR(IR_SIZE-1 downto IR_SIZE-6);
+  alias opcode_type: std_logic_vector(1 downto 0) is opcode(5 downto 4);
+  alias opcode_Opc: std_logic is opcode(3); -- Op count
+  alias opcode_ALU: std_logic is opcode(2);
+  alias opcode_JMP_flag: std_logic_vector(1 downto 0) is opcode(1 downto 0);
 
   constant TYPE_R: std_logic_vector(1 downto 0) := b"00";
   constant TYPE_J: std_logic_vector(1 downto 0) := b"01";
@@ -65,14 +67,13 @@ architecture main of Control_Unit is
   signal s_is_LW: std_logic;
   signal s_is_CALL: std_logic;
   signal s_is_RET: std_logic;
-  signal s_is_J_type: std_logic;
 
 begin
-  s_is_J_type <= '1' when 
+  control_signals.is_J_type <= '1' when 
     opcode_type = TYPE_J else 
   '0';
 
-  control_signals.is_J_type <= s_is_J_type;
+  control_signals.JMP_flag <= opcode_JMP_flag;
 
   s_is_LW <= '1' when 
     opcode(5 downto 1) = BITS_LW else 
