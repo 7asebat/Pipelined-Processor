@@ -1,6 +1,5 @@
 from Config import Register_Codes, Instruction_Opcode_Funct, Instruction_Names
-from Utility import value_to_bit_string
-from Sanitize import parse_I_type_offset
+from Sanitize import parse_I_type_offset, value_to_bit_string
 
 
 # TODO(Abdelrahman) Handle negative shifts?
@@ -27,8 +26,8 @@ def write_no_op(bit_string, Memory, curr_addr):
     return curr_addr
 
 
-def process_instruction(ins, bit_string, Memory, curr_addr: int, index: int):
-    bit_string += Instruction_Opcode_Funct[ins[0]]
+def process_instruction(ins, Memory, curr_addr: int, index: int):
+    bit_string = Instruction_Opcode_Funct[ins[0]]
 
     # NOTE(Abdelrahman) bit_string should be 16 bits here
     # no idea why it's 32 bits in the table/schematic/design
@@ -59,7 +58,22 @@ def process_instruction(ins, bit_string, Memory, curr_addr: int, index: int):
         curr_addr = write_no_op(bit_string, Memory, curr_addr)
 
     else:
-        print('Invalid instruction: syntax error in line', index + 1)
-        raise NotImplementedError
+        raise ValueError(f'Invalid instruction: syntax error in line {index+1}')
 
     return curr_addr
+
+
+def process_constant(instruction, Memory, curr_addr, index) -> int:
+    if len(instruction) > 1:
+        raise ValueError(f'Error in parsing constant: syntax error in line {index + 1}')
+
+    constant = instruction[0]
+    try:
+        curr_addr = write_immediate_value(constant, Memory, curr_addr)
+        curr_addr += 1
+        curr_addr = write_immediate_value('0', Memory, curr_addr)
+        return curr_addr
+
+    except Exception as e:
+        raise ValueError(f'Error in parsing constant: syntax error in line {index + 1}')
+

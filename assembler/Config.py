@@ -146,3 +146,5 @@ Register_Codes = {
     'R7': '111',
     "UD": "000"
 }
+
+Comment_String = '#'

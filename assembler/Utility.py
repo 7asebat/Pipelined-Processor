@@ -1,8 +1,8 @@
-def pad_memory(Memory):
-    # Automatically point to the first available instruction
-    padded_memory = [f'{0:016b}', f'{2:016b}']
+def pad_memory(Memory: dict[int, str]) -> list[str]:
+    padded_memory = [f'{0:016b}'] * (max(Memory.keys()) + 1)
+
     for i in sorted(Memory):
-        padded_memory.append(Memory[i])
+        padded_memory[i] = Memory[i]
 
     return padded_memory
 
@@ -73,16 +73,3 @@ def build_lookup_table(filePath):
 
     return table
 
-
-def value_to_bit_string(value_string: str, size: int = 16) -> str:
-    # Values are hexadecimal
-    value = int(value_string, base=16)
-
-    # # Use the 2's complement
-    # if value < 0:
-    #     value = (1 << size) + value
-
-    # Keep only `size` bits
-    value &= (1 << size) - 1
-
-    return f'{value:0{size}b}'
