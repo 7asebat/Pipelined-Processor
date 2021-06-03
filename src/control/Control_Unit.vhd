@@ -28,6 +28,10 @@ architecture main of Control_Unit is
   signal s_is_RET: std_logic;
 
 begin
+  control_signals.NOP <= '1' when
+    opcode = OP_NOP else
+  '0';
+  
   control_signals.is_J_type <= '1' when 
     opcode_type = TYPE_J else 
   '0';

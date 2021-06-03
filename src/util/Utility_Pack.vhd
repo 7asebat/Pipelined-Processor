@@ -55,6 +55,7 @@ package Utility_Pack is
   constant OPC_Single_Op: std_logic := '0';
   constant OPC_Double_Op: std_logic := '1';
 
+  constant OP_NOP: std_logic_vector(5 downto 0) := b"11_10_10";
   constant OP_CALL: std_logic_vector(5 downto 0) := b"01_10_00";
   constant OP_RET: std_logic_vector(5 downto 0) := b"01_10_01";
 
@@ -83,6 +84,10 @@ package Utility_Pack is
 
   -- Struct
   type control_signals_t is record
+    -- Do nothing, Disable registers moving forward
+    -- Nullifies remaining control signals
+    NOP: std_logic;
+
     -- PC source control signals
     RET_PC_SRC_CTRL:  std_logic;
 
@@ -126,6 +131,7 @@ package Utility_Pack is
   end record control_signals_t;
 
   constant CTRL_NOP: control_signals_t := (
+    NOP => '1',
     RET_PC_SRC_CTRL => '0',
     Reg_write => '0',
     Mem_write => '0',

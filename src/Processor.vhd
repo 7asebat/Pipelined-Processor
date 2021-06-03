@@ -131,7 +131,7 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_IDEX_enable <= '1';
+  s_IDEX_enable <= not s_ID_control_signals.NOP;
   s_IDEX_reset <= s_ID_lw_reset;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
@@ -170,9 +170,12 @@ BEGIN
       regB_data => s_EX_regB_data,
 
       -- Feedback values
-      WB_regB_ID => s_WB_regB_ID,
+      MEM_NOP => s_MEM_control_signals.NOP,
       MEM_regB_ID => s_MEM_regB_ID,
       MEM_ALU_result => s_MEM_ALU_result,
+
+      WB_NOP => s_WB_control_signals.NOP,
+      WB_regB_ID => s_WB_regB_ID,
       WB_result => s_WB_result,
 
       flags => s_EX_flags,
@@ -186,7 +189,7 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_EXMEM_enable <= '1';
+  s_EXMEM_enable <= not s_EX_control_signals.NOP;
   s_EXMEM_reset <= '0';
   intreg_exmem : ENTITY work.Intreg_EX_MEM
     PORT MAP(
@@ -227,7 +230,7 @@ BEGIN
       Memory_Load => s_MEM_Memory_load
     );
 
-  s_MEMWB_reset <= '0';
+  s_MEMWB_reset <= not s_MEM_control_signals.NOP;
   s_MEMWB_enable <= '1';
   intreg_memwb : ENTITY work.Intreg_MEM_WB
     PORT MAP(

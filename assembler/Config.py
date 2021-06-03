@@ -113,7 +113,7 @@ Instruction_Opcode_Funct = {
     "SHL": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.SHL,
     "SHR": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.SHR,
     "IADD": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.ADD,
-    "LDM": Instruction_Prefix.I_type.LDM + ALU_Funct.CLR,
+    "LDM": Instruction_Prefix.I_type.LDM + ALU_Funct.MOV,
     "LDD": Instruction_Prefix.I_type.LDD + ALU_Funct.ADD,
     "STD": Instruction_Prefix.I_type.STD + ALU_Funct.ADD,
 

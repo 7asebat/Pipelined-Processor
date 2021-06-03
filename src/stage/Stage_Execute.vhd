@@ -19,9 +19,12 @@ port (
     regB_data: in std_logic_vector(WORD_SIZE-1 downto 0);
 
     -- Feedback values
-    WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
+    MEM_NOP: in std_logic;
     MEM_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
     MEM_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+
+    WB_NOP: in std_logic;
+    WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
     WB_result: in std_logic_vector(WORD_SIZE-1 downto 0);
 
     flags: out std_logic_vector(FLAGS_COUNT-1 downto 0);
@@ -87,12 +90,18 @@ begin
     port map (
         EX_regA_ID => regA_ID,
         EX_regB_ID => regB_ID,
-        WB_regB_ID => WB_regB_ID,
+
+        MEM_NOP => MEM_NOP,
         MEM_regB_ID => MEM_regB_ID,
+        MEM_ALU_result => MEM_ALU_result,
+
+        WB_NOP => WB_NOP,
+        WB_regB_ID => WB_regB_ID,
+        WB_result => WB_result,
+
         EX_regA_data => regA_data,
         EX_regB_data => regB_data,
-        MEM_ALU_result => MEM_ALU_result,
-        WB_result => WB_result,
+
         forwardA => s_fu_A,
         forwardB => s_fu_B
     );

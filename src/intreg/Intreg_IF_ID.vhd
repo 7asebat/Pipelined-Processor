@@ -18,8 +18,6 @@ entity Intreg_IF_ID is
 end entity Intreg_IF_ID;
 
 architecture main of Intreg_IF_ID is
-  constant OP_NOP: std_logic_vector(5 downto 0) := b"11_10_10";
-
   signal s_return_adr: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_IR: std_logic_vector(WORD_SIZE-1 downto 0);
 
