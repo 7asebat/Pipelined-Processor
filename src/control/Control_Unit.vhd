@@ -28,7 +28,7 @@ architecture main of Control_Unit is
   constant TYPE_I: std_logic_vector(1 downto 0) := b"10";
   constant TYPE_C: std_logic_vector(1 downto 0) := b"11";
 
-  constant BITS_LW: std_logic_vector(4 downto 0) := b"10_1_00";
+  constant BITS_LW: std_logic_vector(4 downto 0) := b"10_0_1_0";
   constant BITS_CLR: std_logic_vector(1 downto 0) := b"00";
   constant BITS_SET: std_logic_vector(1 downto 0) := b"01";
 
