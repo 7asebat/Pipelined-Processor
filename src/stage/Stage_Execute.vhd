@@ -136,6 +136,7 @@ begin
 
     pc_src_ctrl: entity work.PC_Source_Control
     port map (
+        clk => clk,
         flags => s_Flags_file_ALU,
         is_J_type => control_signals.is_J_type,
         JMP_flag => control_signals.JMP_flag,

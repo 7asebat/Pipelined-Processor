@@ -26,10 +26,12 @@ architecture main of PC_Source_Control_TB is
   signal s_is_J_type: std_logic;
   signal s_JMP_flag: std_logic_vector(1 downto 0);
   signal s_J_PC_SRC_CTRL: std_logic;
+  signal s_clk: std_logic;
 
 begin
   pic: entity work.PC_Source_Control
   port map (
+      clk => s_clk,
       flags => s_flags,
       is_J_type => s_is_J_type,
       JMP_flag => s_JMP_flag,
@@ -38,10 +40,13 @@ begin
 
   process begin
     for i in 0 to TESTCASE_COUNT-1 loop
-      s_flags <= test_flags(i);
-      s_is_J_type <= test_is_J_type(i);
-      s_JMP_flag <= test_JMP_flag(i);
+      s_clk <= '1';
+        s_flags <= test_flags(i);
+        s_is_J_type <= test_is_J_type(i);
+        s_JMP_flag <= test_JMP_flag(i);
+      wait for 50 ps;
 
+      s_clk <= '0';
       wait for 50 ps;
       assert (s_J_PC_SRC_CTRL = test_J_PC_SRC_CTRL(i))
       report "FAIL: case " & integer'image(i) & CR

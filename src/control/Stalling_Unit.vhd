@@ -40,10 +40,10 @@ BEGIN
  
   PROCESS (clk)
   BEGIN
-    IF (rising_edge(clk)) THEN
-      s_is_lw <= is_lw;
+    --IF (rising_edge(clk)) THEN
+    --  s_is_lw <= is_lw;
 
-    elsif (falling_edge(clk) and s_is_lw = '1') then
+    if (falling_edge(clk) and is_lw = '1') then
       if (D_RegA_en = '1') then
         if (EX_RegB_ID = D_RegA_ID) then
           activate <= '1';
@@ -55,7 +55,7 @@ BEGIN
         end if;
       end if;
 
-    else 
+    elsif (falling_edge(clk)) then
       activate <= '0';
     end if;
 

@@ -31,7 +31,12 @@ def write_mem_file(fn, Memory):
 def write_do_file(fn):
     with open(f'{fn}.do', 'w') as f:
         f.write(fr'''
-restart
+
+vsim work.Processor
+
+add wave -position 1  sim:/processor/clk
+add wave -position 2  sim:/processor/reset
+add wave -hex -position end sim:/processor/decode/reg_file/reg_file
 
 mem load -i {fn}.mem -filltype value -filldata 0 /processor/fetch/instruction_memory/ram 
 
