@@ -14,7 +14,7 @@ architecture main of PC_Increment_Control_TB is
   type control_t is array (0 to TESTCASE_COUNT-1) of std_logic;
 
   constant test_IR: word_t := (X"F000_0000", X"7000_0000", X"8000_FFFF");
-  constant test_increment: control_t := ('1', '0', '1');
+  constant test_increment: control_t := ('0', '0', '1');
 
   signal s_IR: std_logic_vector(IR_SIZE-1 downto 0);
   signal s_increment: std_logic;

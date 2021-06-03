@@ -12,5 +12,7 @@ end entity PC_Increment_Control;
 
 architecture main of PC_Increment_Control is
 begin
-  increment <= IR(IR_SIZE-1);
+  increment <= '1' when 
+    IR(WORD_SIZE-1 downto WORD_SIZE-2) = TYPE_I else
+  '0';
 end architecture main;
