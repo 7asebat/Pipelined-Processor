@@ -91,7 +91,7 @@ BEGIN
     s_EX_control_signals.is_CALL_or_RET OR
     s_MEM_control_signals.is_RET OR
     s_WB_control_signals.is_RET
-    );
+  );
   intreg_ifid : ENTITY work.Intreg_IF_ID
     PORT MAP(
       clk => clk,
@@ -132,7 +132,7 @@ BEGIN
 
   -- TODO(Abdelrahman) Verify this
   s_IDEX_reset <= s_ID_lw_reset or reset;
-  s_IDEX_enable <= not s_ID_control_signals.NOP;
+  s_IDEX_enable <= '1';
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,
@@ -190,7 +190,7 @@ BEGIN
 
   -- TODO(Abdelrahman) Verify this
   s_EXMEM_reset <= reset;
-  s_EXMEM_enable <= not s_EX_control_signals.NOP;
+  s_EXMEM_enable <= '1';
   intreg_exmem : ENTITY work.Intreg_EX_MEM
     PORT MAP(
       clk => clk,
@@ -231,7 +231,7 @@ BEGIN
     );
 
   s_MEMWB_reset <= reset;
-  s_MEMWB_enable <= not s_MEM_control_signals.NOP;
+  s_MEMWB_enable <= '1';
   intreg_memwb : ENTITY work.Intreg_MEM_WB
     PORT MAP(
       clk => clk,

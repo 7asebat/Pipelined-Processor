@@ -24,6 +24,8 @@ begin
             when JMP_C => s_jump_condition <= flags(FLAGS_C);
             when others => s_jump_condition <= '1';
             end case;
+        elsif (rising_edge(clk)) then
+            s_jump_condition <= '0';
         end if;
     end process;
 

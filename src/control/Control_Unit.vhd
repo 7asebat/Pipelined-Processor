@@ -33,7 +33,7 @@ begin
   '0';
   
   control_signals.is_J_type <= '1' when 
-    opcode_type = TYPE_J else 
+    opcode_type = TYPE_J and opcode /= OP_NOP else 
   '0';
 
   control_signals.JMP_flag <= opcode_JMP_flag;
