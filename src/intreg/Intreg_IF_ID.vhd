@@ -6,7 +6,7 @@ use work.utility_pack.all;
 
 entity Intreg_IF_ID is
   port (clk: in std_logic;
-        en: in std_logic;
+        en: in std_logic; -- loads when high
         rst: in std_logic;
 
         load_return_adr: in std_logic_vector(WORD_SIZE-1 downto 0);

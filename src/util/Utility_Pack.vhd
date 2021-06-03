@@ -37,6 +37,50 @@ package Utility_Pack is
   constant JMP_C: std_logic_vector(1 downto 0) := b"01";
   constant JMP_Unconditional: std_logic_vector(1 downto 0) := b"00";
 
+
+  -- Control Signals Opcodes
+  
+  constant TYPE_R: std_logic_vector(1 downto 0) := b"00";
+  constant TYPE_J: std_logic_vector(1 downto 0) := b"01";
+  constant TYPE_I: std_logic_vector(1 downto 0) := b"10";
+  constant TYPE_C: std_logic_vector(1 downto 0) := b"11";
+
+  constant BITS_LW: std_logic_vector(4 downto 0) := b"10_0_1_0";
+  constant BITS_CLR: std_logic_vector(1 downto 0) := b"00";
+  constant BITS_SET: std_logic_vector(1 downto 0) := b"01";
+
+  constant ALU_Main: std_logic := '0';
+  constant ALU_Aux: std_logic := '1';
+
+  constant OPC_Single_Op: std_logic := '0';
+  constant OPC_Double_Op: std_logic := '1';
+
+  constant OP_CALL: std_logic_vector(5 downto 0) := b"01_10_00";
+  constant OP_RET: std_logic_vector(5 downto 0) := b"01_10_01";
+
+  constant OP_LDD: std_logic_vector(5 downto 0) := b"10_0_1_01";
+  constant OP_STD: std_logic_vector(5 downto 0) := b"10_0_1_10";
+
+  -- TODO(Abdelrahman) Change all constants to this format
+  -- constant OP_PUSH: std_logic_vector(5 downto 0) := TYPE_R & OPC_Single_Op & ALU_Aux & b"00";
+  constant OP_PUSH: std_logic_vector(5 downto 0) := b"00_1_0_00";
+  constant OP_POP: std_logic_vector(5 downto 0) := b"00_1_0_01";
+  constant OP_IN: std_logic_vector(5 downto 0) := b"00_1_0_10";
+  constant OP_OUT: std_logic_vector(5 downto 0) := b"00_1_0_11";
+
+  constant OP1_Ra: std_logic_vector(1 downto 0) := b"00";
+  constant OP1_Imm: std_logic_vector(1 downto 0) := b"01";
+  constant OP1_SP: std_logic_vector(1 downto 0) := b"10";
+
+  constant OP2_Rb: std_logic_vector(1 downto 0) := b"00";
+  constant OP2_Imm: std_logic_vector(1 downto 0) := b"01";
+  constant OP2_Zero: std_logic_vector(1 downto 0) := b"10";
+  constant OP2_Two: std_logic_vector(1 downto 0) := b"11";
+
+  constant WBS_ALU: std_logic_vector(1 downto 0) := b"00";
+  constant WBS_Memload: std_logic_vector(1 downto 0) := b"01";
+  constant WBS_IOload: std_logic_vector(1 downto 0) := b"10";
+
   -- Struct
   type control_signals_t is record
     -- PC source control signals

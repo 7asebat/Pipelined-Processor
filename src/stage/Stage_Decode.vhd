@@ -39,6 +39,7 @@ architecture main of Stage_Decode is
     signal s_increment: std_logic;
     signal s_instruction_address: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_return_address: std_logic_vector(WORD_SIZE-1 downto 0);
+    signal s_control_signals: control_signals_t;
 
     constant PC_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0000";
 
@@ -51,10 +52,12 @@ begin
     regA_ID <= instruction_regA_ID;
     regB_ID <= instruction_regB_ID;
 
+    control_signals <= s_control_signals;
+
     ctrl_unit: entity work.Control_Unit
     port map (
         IR => IR,
-        control_signals => control_signals
+        control_signals => s_control_signals
     );
 
     sign_ext: entity work.Sign_Extend
@@ -81,11 +84,11 @@ begin
 
     stall: entity work.Stalling_Unit
     port map (
+        clk => clk,
         is_lw => is_lw,
         lw_reset => lw_reset,
         not_en => enable_n,
-        D_RegA_ID => instruction_regA_ID,
-        D_RegB_ID => instruction_regB_ID,
+        IR => IR,
         EX_RegB_ID => EX_RegB_ID
     );
 
