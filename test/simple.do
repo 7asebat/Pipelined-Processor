@@ -23,5 +23,3 @@ noforce sim:/Processor/s_IDEX_reset
 noforce sim:/Processor/s_EXMEM_reset
 noforce sim:/Processor/s_MEMWB_reset
 force -freeze sim:/processor/reset 0 0
-
-run 16ns;

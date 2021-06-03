@@ -33,15 +33,7 @@ port (
 end entity Stage_Decode;
 
 architecture main of Stage_Decode is
-    signal s_enable: std_logic;
-    signal s_IR: std_logic_vector(WORD_SIZE-1 downto 0);
-
-    signal s_increment: std_logic;
-    signal s_instruction_address: std_logic_vector(WORD_SIZE-1 downto 0);
-    signal s_return_address: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_control_signals: control_signals_t;
-
-    constant PC_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0000";
 
     alias instruction_lower: std_logic_vector(WORD_SIZE/2-1 downto 0) is IR(WORD_SIZE/2-1 downto 0);
     -- TODO(Abdelrahman) Extract constants

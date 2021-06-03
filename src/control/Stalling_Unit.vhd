@@ -37,21 +37,28 @@ BEGIN
   D_RegB_En <= '1' WHEN NOT((opcode = OP_RET) OR (opcode_type = TYPE_C)) ELSE
     '0';
 
-  activate <=
-    '1' WHEN ((s_is_lw = '1')
-    AND
-    (
-    ((EX_RegB_ID = D_RegA_ID) AND D_RegA_en = '1')
-    OR
-    ((EX_RegB_ID = D_RegB_ID) AND D_RegB_en = '1')))
-    ELSE
-    '0';
-
+ 
   PROCESS (clk)
   BEGIN
     IF (rising_edge(clk)) THEN
       s_is_lw <= is_lw;
-    END IF;
+
+    elsif (falling_edge(clk) and s_is_lw = '1') then
+      if (D_RegA_en = '1') then
+        if (EX_RegB_ID = D_RegA_ID) then
+          activate <= '1';
+        end if;
+
+      elsif (D_RegB_en = '1') then
+        if (EX_RegB_ID = D_RegB_ID) then
+          activate <= '1';
+        end if;
+      end if;
+
+    else 
+      activate <= '0';
+    end if;
+
   END PROCESS;
 
   lw_reset <= activate;
