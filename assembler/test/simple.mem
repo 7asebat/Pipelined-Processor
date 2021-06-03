@@ -1,6 +1,0 @@
-// memory data file (do not edit the following line - required for mem load use)
-// instance=/processor/fetch/instruction_memory/ram
-// format=mti addressradix=h dataradix=s version=1.0 wordsperline=4
-0: 0000000000000000 0000000000000010 1001000000000000 0000000011111111 
-4: 1001000000000001 0000000000101101 1001000000000010 1010101111001101 
-8: 0010001000000001 0010001000001010 1110100000000000 
