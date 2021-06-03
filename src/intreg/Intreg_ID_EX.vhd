@@ -8,6 +8,7 @@ entity Intreg_ID_EX is
   port (clk: in std_logic;
         en: in std_logic;
         rst: in std_logic;
+        flush: in std_logic;
 
         load_control_signals: in control_signals_t;
         load_return_adr: in std_logic_vector(WORD_SIZE-1 downto 0);
@@ -47,6 +48,15 @@ begin
   process(clk, rst) begin
     -- TODO(Abdelrahman) Reset this register properly
     if (rst = '1') then
+      s_control_signals <= CTRL_NOP;
+      s_return_adr <= (others => '0');
+      s_imm_value <= (others => '0');
+      s_regA_ID <= (others => '0');
+      s_regB_ID <= (others => '0');
+      s_regA_data <= (others => '0');
+      s_regB_data <= (others => '0');
+    
+    elsif (rising_edge(clk) and flush = '1') then
       s_control_signals <= CTRL_NOP;
       s_return_adr <= (others => '0');
       s_imm_value <= (others => '0');

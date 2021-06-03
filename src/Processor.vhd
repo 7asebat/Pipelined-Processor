@@ -62,6 +62,7 @@ ARCHITECTURE main OF Processor IS
 
   SIGNAL s_IDEX_reset : STD_LOGIC;
   SIGNAL s_IDEX_enable : STD_LOGIC;
+  SIGNAL s_IDEX_flush : STD_LOGIC;
 
   SIGNAL s_EXMEM_reset : STD_LOGIC;
   SIGNAL s_EXMEM_enable : STD_LOGIC;
@@ -131,13 +132,19 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_IDEX_reset <= s_ID_lw_reset or reset;
+  -- NOTE(Abdelrahman) 
+  -- One true jump followed by a false jump causes both jumps to be taken
+  -- Unless the IDEX register is flushed after a jump is taken
+  -- Introducing a synchronous flush fixes this
+  s_IDEX_reset <= reset;
   s_IDEX_enable <= '1';
+  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL or s_ID_lw_reset;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,
       en => s_IDEX_enable,
       rst => s_IDEX_reset,
+      flush => s_IDEX_flush,
 
       load_control_signals => s_ID_control_signals,
       load_return_adr => s_ID_return_adr,
