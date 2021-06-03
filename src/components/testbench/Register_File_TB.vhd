@@ -23,16 +23,16 @@ architecture main of Register_File_TB is
                                        x"1234_5678", 
                                        x"DEAD_BEEF"); 
 
-  constant test_read_regA_ID: adr_t := (o"0", o"0", o"0", o"2", o"2"); 
-  constant test_regA_data: word_t := (x"0000_0000", 
+  constant test_read_regA_ID: adr_t := (o"0", o"0", o"0", o"2", o"4"); 
+  constant test_regA_data: word_t := (x"DEAD_BEEF", 
                                       x"DEAD_BEEF", 
                                       x"DEAD_BEEF", 
                                       x"BEEF_BEEF", 
-                                      x"BEEF_BEEF"); 
+                                      x"0000_0000"); 
 
-  constant test_read_regB_ID: adr_t := (o"0", o"1", o"1", o"1", o"3"); 
+  constant test_read_regB_ID: adr_t := (o"5", o"1", o"1", o"1", o"3"); 
   constant test_regB_data: word_t := (x"0000_0000", 
-                                      x"0000_0000", 
+                                      x"DEAD_DEAD", 
                                       x"DEAD_DEAD", 
                                       x"DEAD_DEAD", 
                                       x"1234_5678"); 
@@ -59,26 +59,23 @@ begin
 
   process begin
     for i in 0 to TESTCASE_COUNT-1 loop
-      -- Start with a rising edge
-      s_clk <= '0';
-
-      s_read_regA_ID <= test_read_regA_ID(i);
-      s_read_regB_ID <= test_read_regB_ID(i);
+      -- Start with a falling edge
+      s_clk <= '1';
+        s_read_regA_ID <= test_read_regA_ID(i);
+        s_read_regB_ID <= test_read_regB_ID(i);
+        s_write_en <= test_write_en(i);
+        s_write_reg_ID <= test_write_reg_ID(i);
+        s_write_data <= test_write_data(i);
       wait for 50 ps;
 
-      -- Read previous state on a rising edge
-      s_clk <= '1';
-
       -- Write data on the next falling edge 
-      s_write_en <= test_write_en(i);
-      s_write_reg_ID <= test_write_reg_ID(i);
-      s_write_data <= test_write_data(i);
+      s_clk <= '0';
       wait for 50 ps;
 
       assert (s_regA_data = test_regA_data(i) and s_regB_data = test_regB_data(i))
-      report "FAIL: case " & integer'image(i) & " "
-        & "RA, RB   = (" & to_hstring(s_regA_data) & ", " & to_hstring(s_regB_data) & ") "
-        & "expected = (" & to_hstring(test_regA_data(i)) & ", " & to_hstring(test_regB_data(i)) & ") "
+      report "FAIL: case " & integer'image(i) & CR
+        & "RA, RB   = (" & to_hstring(s_regA_data) & ", " & to_hstring(s_regB_data) & ")" & CR
+        & "expected = (" & to_hstring(test_regA_data(i)) & ", " & to_hstring(test_regB_data(i)) & ")" & CR
       severity error;
 
     end loop;

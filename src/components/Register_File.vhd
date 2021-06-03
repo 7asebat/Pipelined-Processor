@@ -28,16 +28,13 @@ architecture main of Register_File is
 
 begin
   process(clk) begin
-    if (rising_edge(clk)) then
-      regA_data <= reg_file(idx(read_regA_ID));
-      regB_data <= reg_file(idx(read_regB_ID));
-    end if;
-
     -- Write to file on falling edge
     if (falling_edge(clk) and write_en = '1') then
       reg_file(idx(write_reg_ID)) <= write_data;
     end if;
 
   end process;
+  regA_data <= reg_file(idx(read_regA_ID));
+  regB_data <= reg_file(idx(read_regB_ID));
 
 end architecture main;
