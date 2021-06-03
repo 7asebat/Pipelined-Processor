@@ -44,7 +44,7 @@ def define_label(line, labels, curr_addr):
     labels[label] = curr_addr
 
 
-def parse_I_type_offset(ins: list[str]) -> list[str]:
+def parse_I_type_offset(ins):
     # Rb
     operands = ["", ""]
     operands[1] = ins[0]
