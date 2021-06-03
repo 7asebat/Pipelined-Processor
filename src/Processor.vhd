@@ -131,8 +131,8 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
+  s_IDEX_reset <= s_ID_lw_reset or reset;
   s_IDEX_enable <= not s_ID_control_signals.NOP;
-  s_IDEX_reset <= s_ID_lw_reset;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,
@@ -189,8 +189,8 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
+  s_EXMEM_reset <= reset;
   s_EXMEM_enable <= not s_EX_control_signals.NOP;
-  s_EXMEM_reset <= '0';
   intreg_exmem : ENTITY work.Intreg_EX_MEM
     PORT MAP(
       clk => clk,
@@ -230,8 +230,8 @@ BEGIN
       Memory_Load => s_MEM_Memory_load
     );
 
-  s_MEMWB_reset <= not s_MEM_control_signals.NOP;
-  s_MEMWB_enable <= '1';
+  s_MEMWB_reset <= reset;
+  s_MEMWB_enable <= not s_MEM_control_signals.NOP;
   intreg_memwb : ENTITY work.Intreg_MEM_WB
     PORT MAP(
       clk => clk,
