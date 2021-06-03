@@ -22,17 +22,15 @@ architecture main of IO_Block is
 begin
   process (clk, rst) begin
     if (rst = '1') then
-      load_out <= (others => '0');
       signal_out <= (others => '0');
 
     elsif (rising_edge(clk)) then
-      if (control_in = '1') then
-        load_out <= signal_in;
-
-      elsif (control_out = '1') then
+      if (control_out = '1') then
         signal_out <= write_in;
       end if;
-
     end if;
+
   end process;
+
+  load_out <= signal_in;
 end architecture main;

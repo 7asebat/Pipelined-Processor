@@ -69,7 +69,8 @@ begin
   -- LW
   -- (R/I) & Main ALU
   control_signals.Reg_write <= '1' when 
-    opcode = OP_POP or 
+    opcode = OP_POP or
+    opcode = OP_IN or
     s_is_LW = '1' or
     (opcode_type = TYPE_R and opcode_ALU = ALU_Main) or
     (opcode_type = TYPE_I and opcode_ALU = ALU_Main) else
@@ -131,7 +132,7 @@ begin
 
   -- TODO(Abdelrahman) Replace I-type condition, the long ugly one
   control_signals.WB_source <=
-    WBS_ALU when opcode_type = TYPE_R
+    WBS_ALU when (opcode_type = TYPE_R and not(opcode = OP_POP) and not(opcode = OP_IN))
             or   (opcode_type = TYPE_I and opcode(1 downto 0) = b"00") 
     else
     WBS_Memload when opcode = OP_LDD
