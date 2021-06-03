@@ -2,9 +2,8 @@ from Config import Register_Codes, Instruction_Opcode_Funct, Instruction_Names
 from Utility import value_to_bit_string
 from Sanitize import parse_I_type_offset
 
+
 # TODO(Abdelrahman) Handle negative shifts?
-
-
 def write_single_op(operand, bit_string, Memory, curr_addr):
     bit_string += Register_Codes["UD"] + Register_Codes[operand]
     Memory[curr_addr] = bit_string

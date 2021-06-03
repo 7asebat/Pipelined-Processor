@@ -6,6 +6,7 @@ use work.Utility_Pack.all;
 
 entity IO_Block is
   port (clk: in std_logic;
+        rst: in std_logic;
         control_in: in std_logic;
         control_out: in std_logic;
 
@@ -19,8 +20,12 @@ end entity IO_Block;
 
 architecture main of IO_Block is
 begin
-  process (clk) begin
-    if (rising_edge(clk)) then
+  process (clk, rst) begin
+    if (rst = '1') then
+      load_out <= (others => '0');
+      signal_out <= (others => '0');
+
+    elsif (rising_edge(clk)) then
       if (control_in = '1') then
         load_out <= signal_in;
 

@@ -19,9 +19,10 @@ architecture main of IO_Block_TB is
   constant test_load_out: word_t := (x"DEAD_BEEF", x"DEAD_BEEF", x"DEAD_BEEF");
 
   constant test_write_in: word_t := (x"BADD_DDAB", x"FEDD_DEAD", x"0123_4567");
-  constant test_signal_out: word_t := ((others => 'Z'), x"FEDD_DEAD", x"FEDD_DEAD");
+  constant test_signal_out: word_t := (x"0000_0000", x"FEDD_DEAD", x"FEDD_DEAD");
 
   signal s_clk: std_logic;
+  signal s_rst: std_logic;
   signal s_control_in: std_logic;
   signal s_control_out: std_logic;
   signal s_write_in: std_logic_vector(WORD_SIZE-1 downto 0);
@@ -32,6 +33,7 @@ architecture main of IO_Block_TB is
 begin
   io_block: entity work.IO_Block
     port map (clk => s_clk,
+              rst => s_rst,
               control_in => s_control_in,
               control_out => s_control_out,
               write_in => s_write_in,
@@ -40,6 +42,10 @@ begin
               signal_out => s_signal_out);
 
     process begin
+      s_rst <= '1';
+      wait for 50 ps;
+      s_rst <= '0';
+      wait for 50 ps;
       for i in 0 to TESTCASE_COUNT-1 loop
         -- Start with a rising edge
         s_clk <= '0';
@@ -50,12 +56,13 @@ begin
         s_write_in <= test_write_in(i);
         wait for 50 ps;
 
-        -- Read previous state on a rising edge
+        -- Read state on a rising edge
         s_clk <= '1';
         wait for 50 ps;
 
         assert (s_load_out = test_load_out(i) and s_signal_out = test_signal_out(i))
-        report "FAIL: case " & integer'image(i)
+        report "FAIL: case " & integer'image(i) & CR &
+        "(out, in) = (" & to_hstring(s_load_out) & ", " & to_hstring(s_signal_out) & ")" & CR
         severity error;
       end loop;
       wait;

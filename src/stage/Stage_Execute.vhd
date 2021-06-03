@@ -43,6 +43,7 @@ architecture main of Stage_Execute is
 
     signal s_Flags_file_ALU: std_logic_vector(FLAGS_COUNT-1 downto 0);
     signal s_Flags_ALU_file: std_logic_vector(FLAGS_COUNT-1 downto 0);
+    signal s_Flags_reset: std_logic_vector(FLAGS_COUNT-1 downto 0);
 
     signal s_fu_A: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_fu_B: std_logic_vector(WORD_SIZE-1 downto 0);
@@ -97,12 +98,14 @@ begin
     );
     forward_regB_data <= s_fu_B;
 
+    -- Clear flags on reset
+    s_Flags_reset <= o"7" when rst = '1' else control_signals.Flags_reset;
     ff: entity work.Flags_File
     port map (
         clk => clk,
         flags_in => s_Flags_ALU_file,
         flags_set => control_signals.Flags_set,
-        flags_reset => control_signals.Flags_reset,
+        flags_reset => s_Flags_reset,
         flags_out => s_Flags_file_ALU,
         flags_en => control_signals.Flags_enable
     );
@@ -111,6 +114,7 @@ begin
     iob: entity work.IO_Block
     port map (
         clk => clk,
+        rst => rst,
         control_in => control_signals.IO_in,
         control_out => control_signals.IO_out,
 
