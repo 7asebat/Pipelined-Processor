@@ -69,11 +69,10 @@ def process_constant(instruction, Memory, curr_addr, index) -> int:
 
     constant = instruction[0]
     try:
-        curr_addr = write_immediate_value(constant, Memory, curr_addr)
-        curr_addr += 1
         curr_addr = write_immediate_value('0', Memory, curr_addr)
+        curr_addr += 1
+        curr_addr = write_immediate_value(constant, Memory, curr_addr)
         return curr_addr
 
     except Exception as e:
         raise ValueError(f'Error in parsing constant: syntax error in line {index + 1}')
-

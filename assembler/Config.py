@@ -76,7 +76,6 @@ class Instruction_Prefix:
 
     class I_type:
         Main_ALU = "100000"
-        LDM = "100100"
         LDD = "100101"
         STD = "100110"
 
@@ -113,12 +112,12 @@ Instruction_Opcode_Funct = {
     "SHL": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.SHL,
     "SHR": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.SHR,
     "IADD": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.ADD,
-    "LDM": Instruction_Prefix.I_type.LDM + ALU_Funct.MOV,
+    "LDM": Instruction_Prefix.I_type.Main_ALU + ALU_Funct.MOV,
     "LDD": Instruction_Prefix.I_type.LDD + ALU_Funct.ADD,
     "STD": Instruction_Prefix.I_type.STD + ALU_Funct.ADD,
 
-    "PUSH": Instruction_Prefix.R_type.PUSH + ALU_Funct.CLR,
-    "POP": Instruction_Prefix.R_type.POP + ALU_Funct.CLR,
+    "PUSH": Instruction_Prefix.R_type.PUSH + ALU_Funct.ADD,
+    "POP": Instruction_Prefix.R_type.POP + ALU_Funct.ADD,
     "IN": Instruction_Prefix.R_type.IN + ALU_Funct.CLR,
     "OUT": Instruction_Prefix.R_type.OUT + ALU_Funct.CLR,
 

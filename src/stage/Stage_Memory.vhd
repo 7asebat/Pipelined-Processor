@@ -12,7 +12,7 @@ ENTITY Stage_Memory IS
     Return_Adr : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     RegB_Data : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     RegB_ID : IN STD_LOGIC_VECTOR(REG_ADR_WIDTH - 1 DOWNTO 0);
-    IO_Load : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
+    IO_load : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
 
     is_CALL : IN STD_LOGIC;
     Mem_Write : IN STD_LOGIC;
@@ -29,12 +29,12 @@ BEGIN
 
   data_memory : ENTITY work.Memory
     GENERIC MAP(
-      n => 2 ** 16,
+      n => MEM_SIZE, -- 1MB
       m => 16
     )
     PORT MAP(
       clk => clk,
-      address => Mem_Address(15 DOWNTO 0),
+      address => Mem_Address(MEM_ADR_WIDTH-1 DOWNTO 0),
       write_data => Write_Data,
       mem_write => Mem_Write,
       data_out => Read_Data

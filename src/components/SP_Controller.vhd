@@ -21,17 +21,15 @@ begin
     if (reset = '1') then
       SP_value <= SP_DEFAULT;
 
+    elsif (falling_edge(clk)) then
+      case push_or_pop is 
+        when SP_PUSH => SP_value <= SP_value + SP_PUSH_INCREMENT;
+        when SP_POP  => SP_value <= SP_value + SP_POP_INCREMENT;
+        when others  => null;
+      end case;
+
     elsif (rising_edge(clk)) then
       SP_out <= SP_value;
-      case push_or_pop is 
-        when SP_PUSH =>
-          SP_value <= SP_value + SP_PUSH_INCREMENT;
-
-        when SP_POP =>
-          SP_value <= SP_value + SP_POP_INCREMENT;
-
-        when others => null;
-      end case;
     end if;
   end process;
 end architecture main;

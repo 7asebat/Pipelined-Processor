@@ -62,6 +62,7 @@ ARCHITECTURE main OF Processor IS
 
   SIGNAL s_IDEX_reset : STD_LOGIC;
   SIGNAL s_IDEX_enable : STD_LOGIC;
+  SIGNAL s_IDEX_flush : STD_LOGIC;
 
   SIGNAL s_EXMEM_reset : STD_LOGIC;
   SIGNAL s_EXMEM_enable : STD_LOGIC;
@@ -131,13 +132,19 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_IDEX_reset <= s_ID_lw_reset or reset;
+  -- NOTE(Abdelrahman) 
+  -- One true jump followed by a false jump causes both jumps to be taken
+  -- Unless the IDEX register is flushed after a jump is taken
+  -- Introducing a synchronous flush fixes this
+  s_IDEX_reset <= reset;
   s_IDEX_enable <= '1';
+  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL or s_ID_lw_reset;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,
       en => s_IDEX_enable,
       rst => s_IDEX_reset,
+      flush => s_IDEX_flush,
 
       load_control_signals => s_ID_control_signals,
       load_return_adr => s_ID_return_adr,
@@ -170,11 +177,13 @@ BEGIN
       regB_data => s_EX_regB_data,
 
       -- Feedback values
-      MEM_NOP => s_MEM_control_signals.NOP,
+      MEM_Reg_write => s_MEM_control_signals.Reg_write,
+      MEM_IO_in => s_MEM_control_signals.IO_in,
+      MEM_IO_load => s_MEM_IO_load,
       MEM_regB_ID => s_MEM_regB_ID,
       MEM_ALU_result => s_MEM_ALU_result,
 
-      WB_NOP => s_WB_control_signals.NOP,
+      WB_Reg_write => s_WB_control_signals.Reg_write,
       WB_regB_ID => s_WB_regB_ID,
       WB_result => s_WB_result,
 
@@ -222,7 +231,7 @@ BEGIN
       return_adr => s_MEM_return_adr,
       regB_data => s_MEM_regB_data,
       regB_ID => s_MEM_regB_ID,
-      IO_Load => s_MEM_IO_load,
+      IO_load => s_MEM_IO_load,
 
       is_CALL => s_MEM_control_signals.is_CALL,
       Mem_Write => s_MEM_control_signals.Mem_Write,
@@ -255,7 +264,7 @@ BEGIN
     PORT MAP(
       ALU_result => s_WB_ALU_result,
       Memory_Load => s_WB_Memory_load,
-      IO_Load => s_WB_IO_load,
+      IO_load => s_WB_IO_load,
       WB_Source => s_WB_control_signals.WB_source,
 
       WB_Result => s_WB_result
