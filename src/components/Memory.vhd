@@ -28,7 +28,7 @@ BEGIN
 
   PROCESS (clk)
   BEGIN
-    IF rising_edge(clk) THEN
+    IF falling_edge(clk) THEN
       IF mem_write = '1' THEN
         ram(to_integer(unsigned(address))) <= write_data(m - 1 DOWNTO 0);
         ram(to_integer(unsigned(address)) + 1) <= write_data(m * 2 - 1 DOWNTO m);

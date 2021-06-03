@@ -38,8 +38,9 @@ begin
 
   control_signals.JMP_flag <= opcode_JMP_flag;
 
+  -- POP or LDD
   s_is_LW <= '1' when 
-    opcode(5 downto 1) = BITS_LW else 
+    opcode = OP_LDD or opcode = OP_POP else 
   '0';
 
   control_signals.is_LW <= s_is_LW;

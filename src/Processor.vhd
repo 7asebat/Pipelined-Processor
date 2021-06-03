@@ -177,13 +177,13 @@ BEGIN
       regB_data => s_EX_regB_data,
 
       -- Feedback values
-      MEM_NOP => s_MEM_control_signals.NOP,
+      MEM_Reg_write => s_MEM_control_signals.Reg_write,
       MEM_IO_in => s_MEM_control_signals.IO_in,
       MEM_IO_load => s_MEM_IO_load,
       MEM_regB_ID => s_MEM_regB_ID,
       MEM_ALU_result => s_MEM_ALU_result,
 
-      WB_NOP => s_WB_control_signals.NOP,
+      WB_Reg_write => s_WB_control_signals.Reg_write,
       WB_regB_ID => s_WB_regB_ID,
       WB_result => s_WB_result,
 

@@ -34,8 +34,6 @@ ARCHITECTURE main OF Stage_Fetch IS
     SIGNAL s_return_address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
     SIGNAL s_pc_instruction_address : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
 
-    CONSTANT PC_DEFAULT : STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0) := X"0000_0000";
-
 BEGIN
     -- TODO(Abdelrahman) Change this to use enable directly
     s_enable <= NOT enable_n;

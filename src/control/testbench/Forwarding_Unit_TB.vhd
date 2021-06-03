@@ -64,7 +64,7 @@ architecture main of Forwarding_Unit_TB is
                                      x"0000_BBBB",
                                      x"0E0E_0E0E");
 
-  signal s_NOP: std_logic;
+  signal s_Reg_write: std_logic;
   signal s_MEM_IO_in: std_logic;
   signal s_EX_regA_ID: std_logic_vector(REG_ADR_WIDTH-1 downto 0);
   signal s_EX_regB_ID: std_logic_vector(REG_ADR_WIDTH-1 downto 0);
@@ -83,8 +83,8 @@ begin
   -- TODO(Abdelrahman) Test this properly
   forwarding_unit: entity work.Forwarding_Unit
   port map (
-    WB_NOP => s_NOP,
-    MEM_NOP => s_NOP,
+    WB_Reg_write => s_Reg_write,
+    MEM_Reg_write => s_Reg_write,
     MEM_IO_in => s_MEM_IO_in,
     MEM_IO_load => s_MEM_IO_load,
     EX_regA_ID => s_EX_regA_ID,
@@ -100,7 +100,7 @@ begin
   );
 
   process begin
-    s_NOP <= '0';
+    s_Reg_write <= '1';
     for i in 0 to TESTCASE_COUNT-1 loop
       s_EX_regA_ID <= test_EX_regA_ID(i);
       s_EX_regB_ID <= test_EX_regB_ID(i);

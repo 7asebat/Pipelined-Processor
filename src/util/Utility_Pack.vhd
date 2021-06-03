@@ -22,11 +22,10 @@ package Utility_Pack is
 
   constant SP_POP: std_logic_vector(1 downto 0) := b"01";
   constant SP_POP_INCREMENT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0002";
+  constant SP_UNDEF: std_logic_vector(1 downto 0) := b"11";
 
-  -- Default value specified in the document (2^32-2)
-  constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"4000_0000";
-
-  constant PC_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0000_0000";
+  -- Default value specified in the document (2^20-2)
+  constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0004_0000";
 
   constant FLAGS_Z: integer := 2;
   constant FLAGS_N: integer := 1;
@@ -37,9 +36,7 @@ package Utility_Pack is
   constant JMP_C: std_logic_vector(1 downto 0) := b"01";
   constant JMP_Unconditional: std_logic_vector(1 downto 0) := b"00";
 
-
   -- Control Signals Opcodes
-  
   constant TYPE_R: std_logic_vector(1 downto 0) := b"00";
   constant TYPE_J: std_logic_vector(1 downto 0) := b"01";
   constant TYPE_I: std_logic_vector(1 downto 0) := b"10";
@@ -81,6 +78,9 @@ package Utility_Pack is
   constant WBS_ALU: std_logic_vector(1 downto 0) := b"00";
   constant WBS_Memload: std_logic_vector(1 downto 0) := b"01";
   constant WBS_IOload: std_logic_vector(1 downto 0) := b"10";
+
+  constant MEM_SIZE: integer := 16#100000#;
+  constant MEM_ADR_WIDTH: integer := 20;
 
   -- Struct
   type control_signals_t is record

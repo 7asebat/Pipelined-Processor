@@ -29,12 +29,12 @@ BEGIN
 
   data_memory : ENTITY work.Memory
     GENERIC MAP(
-      n => 2 ** 16,
+      n => MEM_SIZE, -- 1MB
       m => 16
     )
     PORT MAP(
       clk => clk,
-      address => Mem_Address(15 DOWNTO 0),
+      address => Mem_Address(MEM_ADR_WIDTH-1 DOWNTO 0),
       write_data => Write_Data,
       mem_write => Mem_Write,
       data_out => Read_Data
