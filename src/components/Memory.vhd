@@ -36,5 +36,5 @@ BEGIN
     END IF;
 
   END PROCESS;
-  data_out <= ram(to_integer(unsigned(address))) & ram(to_integer(unsigned(address)) + 1);
+  data_out <= ram(to_integer(unsigned(address))) & ram((to_integer(unsigned(address)) + 1) MOD (n));
 END ARCHITECTURE;
