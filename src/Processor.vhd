@@ -171,6 +171,8 @@ BEGIN
 
       -- Feedback values
       MEM_NOP => s_MEM_control_signals.NOP,
+      MEM_IO_in => s_MEM_control_signals.IO_in,
+      MEM_IO_load => s_MEM_IO_load,
       MEM_regB_ID => s_MEM_regB_ID,
       MEM_ALU_result => s_MEM_ALU_result,
 
@@ -222,7 +224,7 @@ BEGIN
       return_adr => s_MEM_return_adr,
       regB_data => s_MEM_regB_data,
       regB_ID => s_MEM_regB_ID,
-      IO_Load => s_MEM_IO_load,
+      IO_load => s_MEM_IO_load,
 
       is_CALL => s_MEM_control_signals.is_CALL,
       Mem_Write => s_MEM_control_signals.Mem_Write,
@@ -255,7 +257,7 @@ BEGIN
     PORT MAP(
       ALU_result => s_WB_ALU_result,
       Memory_Load => s_WB_Memory_load,
-      IO_Load => s_WB_IO_load,
+      IO_load => s_WB_IO_load,
       WB_Source => s_WB_control_signals.WB_source,
 
       WB_Result => s_WB_result

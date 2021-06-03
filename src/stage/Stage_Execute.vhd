@@ -20,8 +20,10 @@ port (
 
     -- Feedback values
     MEM_NOP: in std_logic;
+    MEM_IO_in: in std_logic;
     MEM_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
     MEM_ALU_result: in std_logic_vector(WORD_SIZE-1 downto 0);
+    MEM_IO_load: in std_logic_vector(WORD_SIZE-1 downto 0);
 
     WB_NOP: in std_logic;
     WB_regB_ID: in std_logic_vector(REG_ADR_WIDTH-1 downto 0);
@@ -92,6 +94,8 @@ begin
         EX_regB_ID => regB_ID,
 
         MEM_NOP => MEM_NOP,
+        MEM_IO_in => MEM_IO_in,
+        MEM_IO_load => MEM_IO_load,
         MEM_regB_ID => MEM_regB_ID,
         MEM_ALU_result => MEM_ALU_result,
 

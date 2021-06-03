@@ -10,9 +10,11 @@ end entity Forwarding_Unit_TB;
 architecture main of Forwarding_Unit_TB is
   constant TESTCASE_COUNT: integer := 5;
 
+  type control_t is array (0 to TESTCASE_COUNT-1) of std_logic;
   type word_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(WORD_SIZE-1 downto 0);
   type adr_t is array (0 to TESTCASE_COUNT-1) of std_logic_vector(REG_ADR_WIDTH-1 downto 0);
 
+  constant test_MEM_IO_in: control_t := ('1', '0', '0', '0', '0');
   constant test_EX_regA_ID: adr_t := (O"0", O"0", O"0", O"3", O"1");
   constant test_EX_regB_ID: adr_t := (O"1", O"1", O"1", O"4", O"1");
 
@@ -32,6 +34,12 @@ architecture main of Forwarding_Unit_TB is
                                          x"0000_BBBB",
                                          x"0000_BBBB");
 
+  constant test_MEM_IO_load: word_t :=    (x"EEEE_EEEE",
+                                           x"EEEE_AAAA",
+                                           x"EEEE_BBBB",
+                                           x"DEAD_BEEF",
+                                           x"0E0E_0E0E");
+
   constant test_MEM_ALU_result: word_t := (x"EEEE_AAAA",
                                            x"EEEE_AAAA",
                                            x"EEEE_BBBB",
@@ -44,7 +52,7 @@ architecture main of Forwarding_Unit_TB is
                                       x"BEEF_0000",
                                       x"BEEF_0000");
 
-  constant test_forwardA: word_t := (x"EEEE_AAAA",
+  constant test_forwardA: word_t := (x"EEEE_EEEE",
                                      x"EEEE_AAAA",
                                      x"CCCC_AAAA",
                                      x"0000_AAAA",
@@ -57,6 +65,7 @@ architecture main of Forwarding_Unit_TB is
                                      x"0E0E_0E0E");
 
   signal s_NOP: std_logic;
+  signal s_MEM_IO_in: std_logic;
   signal s_EX_regA_ID: std_logic_vector(REG_ADR_WIDTH-1 downto 0);
   signal s_EX_regB_ID: std_logic_vector(REG_ADR_WIDTH-1 downto 0);
   signal s_WB_regB_ID: std_logic_vector(REG_ADR_WIDTH-1 downto 0);
@@ -65,15 +74,19 @@ architecture main of Forwarding_Unit_TB is
   signal s_EX_regA_data: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_EX_regB_data: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_MEM_ALU_result: std_logic_vector(WORD_SIZE-1 downto 0);
+  signal s_MEM_IO_load: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_WB_result: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_forwardA: std_logic_vector(WORD_SIZE-1 downto 0);
   signal s_forwardB: std_logic_vector(WORD_SIZE-1 downto 0);
 
 begin
+  -- TODO(Abdelrahman) Test this properly
   forwarding_unit: entity work.Forwarding_Unit
   port map (
     WB_NOP => s_NOP,
     MEM_NOP => s_NOP,
+    MEM_IO_in => s_MEM_IO_in,
+    MEM_IO_load => s_MEM_IO_load,
     EX_regA_ID => s_EX_regA_ID,
     EX_regB_ID => s_EX_regB_ID,
     WB_regB_ID => s_WB_regB_ID,
@@ -94,9 +107,12 @@ begin
       s_WB_regB_ID <= test_WB_regB_ID(i);
       s_MEM_regB_ID <= test_MEM_regB_ID(i);
 
+      s_MEM_IO_in <= test_MEM_IO_in(i);
+
       s_EX_regA_data <= test_EX_regA_data(i);
       s_EX_regB_data <= test_EX_regB_data(i);
       s_MEM_ALU_result <= test_MEM_ALU_result(i);
+      s_MEM_IO_load <= test_MEM_IO_load(i);
       s_WB_result <= test_WB_result(i);
 
       wait for 50 ps;

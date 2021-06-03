@@ -8,7 +8,7 @@ ENTITY Stage_Writeback IS
 PORT (
   ALU_Result : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
   Memory_Load : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
-  IO_Load : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
+  IO_load : IN STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0);
   WB_Source : IN STD_LOGIC_VECTOR(1 DOWNTO 0);
 
   WB_Result : OUT STD_LOGIC_VECTOR(WORD_SIZE - 1 DOWNTO 0)
@@ -22,7 +22,7 @@ BEGIN
   WB_Result <=
     ALU_Result WHEN "00",
     Memory_Load WHEN "01",
-    IO_Load WHEN "10",
+    IO_load WHEN "10",
     (OTHERS => 'U') WHEN OTHERS;
 
 END main;
