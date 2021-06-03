@@ -1,4 +1,4 @@
-from Config import *
+from Config import Register_Codes, Instruction_Opcode_Funct, Instruction_Names
 from Utility import value_to_bit_string
 from Sanitize import parse_I_type_offset
 

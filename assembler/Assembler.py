@@ -1,5 +1,5 @@
 import sys
-from Utility import write_do_file, write_mem_file, write_memory_to_file
+from Utility import write_do_file, write_mem_file, write_memory_to_file, pad_memory
 from Process import process_instruction
 from Sanitize import is_instruction, sanitize_line, sanitize_label, define_label
 
@@ -54,8 +54,9 @@ for k, v in labels.items():
     print(k, v)
 
 fn = (sys.argv[1]).split('.')[0]
+Memory = pad_memory(Memory)
 print(Memory)
-write_memory_to_file(Memory, 'memory.bin')
+write_memory_to_file(fn, Memory)
 write_mem_file(fn, Memory)
 
 if len(sys.argv) == 2:

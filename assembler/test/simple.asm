@@ -1,6 +1,6 @@
-ldm r0, 5
-ldm r1, 10
-ldm r2, -2
+ldm r0, FF
+ldm r1, 2d
+ldm r2, ABCD
 add r0, r1
 add r1, r2
 nop
