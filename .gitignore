@@ -44,7 +44,7 @@ vsim.dbg
 
 # Project files should be checked into the repository, unless a significant
 # proportion of contributors will probably not be using Sublime Text
-# *.sublime-project
+*.sublime-project
 
 # SFTP configuration file
 sftp-config.json
@@ -84,3 +84,4 @@ GitHub.sublime-settings
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
+

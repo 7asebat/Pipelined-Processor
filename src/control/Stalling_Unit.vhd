@@ -52,8 +52,8 @@ BEGIN
     IF (rising_edge(clk)) THEN
       s_is_lw <= is_lw;
     END IF;
-
-    lw_reset <= activate;
-    not_en <= activate;
   END PROCESS;
+
+  lw_reset <= activate;
+  not_en <= activate;
 END ARCHITECTURE main;

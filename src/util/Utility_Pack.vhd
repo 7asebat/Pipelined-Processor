@@ -63,10 +63,10 @@ package Utility_Pack is
 
   -- TODO(Abdelrahman) Change all constants to this format
   -- constant OP_PUSH: std_logic_vector(5 downto 0) := TYPE_R & OPC_Single_Op & ALU_Aux & b"00";
-  constant OP_PUSH: std_logic_vector(5 downto 0) := b"00_1_0_00";
-  constant OP_POP: std_logic_vector(5 downto 0) := b"00_1_0_01";
-  constant OP_IN: std_logic_vector(5 downto 0) := b"00_1_0_10";
-  constant OP_OUT: std_logic_vector(5 downto 0) := b"00_1_0_11";
+  constant OP_PUSH: std_logic_vector(5 downto 0) := b"00_0_1_00";
+  constant OP_POP: std_logic_vector(5 downto 0) := b"00_0_1_01";
+  constant OP_IN: std_logic_vector(5 downto 0) := b"00_0_1_10";
+  constant OP_OUT: std_logic_vector(5 downto 0) := b"00_0_1_11";
 
   constant OP1_Ra: std_logic_vector(1 downto 0) := b"00";
   constant OP1_Imm: std_logic_vector(1 downto 0) := b"01";

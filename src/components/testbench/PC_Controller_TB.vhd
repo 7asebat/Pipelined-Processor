@@ -16,6 +16,7 @@ ARCHITECTURE main OF PC_Controller_TB IS
     CONSTANT test_wb : logic_t := ('0', '0', '0', '1', '0', '0', '0', '0', '0', '0');
     CONSTANT test_inc_sel : logic_t := ('0', '1', '0', '0', '1', '0', '0', '1', '0', '0');
     CONSTANT test_reset : logic_t := ('1', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+    CONSTANT PC_DEF: std_logic_vector(WORD_SIZE-1 downto 0) := X"1111_1111";
 
     SIGNAL s_enable : STD_LOGIC;
     SIGNAL s_reset : STD_LOGIC;
@@ -30,9 +31,9 @@ ARCHITECTURE main OF PC_Controller_TB IS
 
     -- Values asserted before rising edge
     CONSTANT test_return_adr : PC_out_t := (
-        PC_DEFAULT + 1,
-        PC_DEFAULT + 2,
-        PC_DEFAULT + 3,
+        PC_DEF + 1,
+        PC_DEF + 2,
+        PC_DEF + 3,
         wb + 1,
         wb + 3,
         wb + 4,
@@ -43,9 +44,9 @@ ARCHITECTURE main OF PC_Controller_TB IS
     );
 
     CONSTANT test_PC_out : PC_out_t := (
-        PC_DEFAULT, -- Reset forces DEFAULT
-        PC_DEFAULT + 2,
-        PC_DEFAULT + 3,
+        PC_DEF, -- Reset forces DEFAULT
+        PC_DEF + 2,
+        PC_DEF + 3,
         wb,  -- Selection forces the WB
         wb + 3,
         wb + 4,
@@ -67,6 +68,7 @@ BEGIN
             jmp_address => jmp_addr,
             reset => s_reset,
             return_adr => s_return_adr,
+            PC_DEFAULT => PC_DEF,
             inst_address => address
         );
 
