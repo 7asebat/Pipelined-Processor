@@ -61,9 +61,9 @@ begin
 
   control_signals.RET_PC_SRC_CTRL <= s_is_RET;
 
-  control_signals.SP_push_or_pop <= OP_PUSH(1 downto 0) when 
-    opcode = OP_PUSH else OP_POP(1 downto 0) 
-    when opcode = OP_POP else
+  control_signals.SP_push_or_pop <= 
+    SP_PUSH when opcode = OP_PUSH or opcode = OP_CALL else 
+    SP_POP  when opcode = OP_POP  or opcode = OP_RET  else
   b"11";
 
   -- POP
@@ -138,6 +138,7 @@ begin
     else
     WBS_Memload when opcode = OP_LDD
                 or   opcode = OP_POP
+                or   opcode = OP_RET
     else
     WBS_IOload when opcode = OP_IN
     else

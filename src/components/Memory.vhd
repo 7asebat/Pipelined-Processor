@@ -30,11 +30,13 @@ BEGIN
   BEGIN
     IF falling_edge(clk) THEN
       IF mem_write = '1' THEN
-        ram(to_integer(unsigned(address))) <= write_data(m - 1 DOWNTO 0);
-        ram(to_integer(unsigned(address)) + 1) <= write_data(m * 2 - 1 DOWNTO m);
+      -- Big Endian
+        ram(to_integer(unsigned(address))) <= write_data(m * 2 - 1 DOWNTO m);
+        ram(to_integer(unsigned(address)) + 1) <= write_data(m - 1 DOWNTO 0);
       END IF;
     END IF;
 
   END PROCESS;
-  data_out <= ram(to_integer(unsigned(address))) & ram((to_integer(unsigned(address)) + 1) MOD (n));
+  -- Big Endian
+  data_out <= ram(to_integer(unsigned(address))) & ram((to_integer(unsigned(address)) + 1) MOD n);
 END ARCHITECTURE;

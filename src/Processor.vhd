@@ -3,6 +3,7 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 USE work.Utility_Pack.ALL;
 
+-- NOTE(Abdelrahman) The default instruction is clr R0
 ENTITY Processor IS
   PORT (
     clk : IN STD_LOGIC;
@@ -88,11 +89,7 @@ BEGIN
 
   -- TODO(Abdelrahman) Verify this
   s_IFID_enable <= NOT s_ID_enable_n OR reset;
-  s_IFID_reset <= (
-    s_EX_control_signals.is_CALL_or_RET OR
-    s_MEM_control_signals.is_RET OR
-    s_WB_control_signals.is_RET
-  );
+  s_IFID_reset <= '0'; -- Keep on fetching
   intreg_ifid : ENTITY work.Intreg_IF_ID
     PORT MAP(
       clk => clk,
@@ -133,12 +130,13 @@ BEGIN
 
   -- TODO(Abdelrahman) Verify this
   -- NOTE(Abdelrahman) 
-  -- One true jump followed by a false jump causes both jumps to be taken
-  -- Unless the IDEX register is flushed after a jump is taken
-  -- Introducing a synchronous flush fixes this
+  -- Flush the wrongly fetched and decoded instruction on valid jump
   s_IDEX_reset <= reset;
   s_IDEX_enable <= '1';
-  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL or s_ID_lw_reset;
+  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL or s_ID_lw_reset
+                  or s_EX_control_signals.is_RET
+                  or s_MEM_control_signals.is_RET
+                  or s_WB_control_signals.is_RET;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,

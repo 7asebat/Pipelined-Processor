@@ -25,7 +25,7 @@ package Utility_Pack is
   constant SP_UNDEF: std_logic_vector(1 downto 0) := b"11";
 
   -- Default value specified in the document (2^20-2)
-  constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"0004_0000";
+  constant SP_DEFAULT: std_logic_vector(WORD_SIZE-1 downto 0) := X"000F_FFFE";
 
   constant FLAGS_Z: integer := 2;
   constant FLAGS_N: integer := 1;
@@ -53,8 +53,8 @@ package Utility_Pack is
   constant OPC_Double_Op: std_logic := '1';
 
   constant OP_NOP: std_logic_vector(5 downto 0) := b"11_10_10";
-  constant OP_CALL: std_logic_vector(5 downto 0) := b"01_10_00";
-  constant OP_RET: std_logic_vector(5 downto 0) := b"01_10_01";
+  constant OP_CALL: std_logic_vector(5 downto 0) := b"01_0_1_00";
+  constant OP_RET: std_logic_vector(5 downto 0) := b"01_0_1_01";
 
   constant OP_LDD: std_logic_vector(5 downto 0) := b"10_0_1_01";
   constant OP_STD: std_logic_vector(5 downto 0) := b"10_0_1_10";

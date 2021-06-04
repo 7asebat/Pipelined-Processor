@@ -50,6 +50,8 @@ architecture main of Stage_Execute is
     signal s_Flags_ALU_file: std_logic_vector(FLAGS_COUNT-1 downto 0);
     signal s_Flags_reset: std_logic_vector(FLAGS_COUNT-1 downto 0);
 
+    signal s_J_PC_SRC_CTRL: std_logic;
+
     signal s_fu_A: std_logic_vector(WORD_SIZE-1 downto 0);
     signal s_fu_B: std_logic_vector(WORD_SIZE-1 downto 0);
 
@@ -112,7 +114,13 @@ begin
     forward_regB_data <= s_fu_B;
 
     -- Clear flags on reset
-    s_Flags_reset <= o"7" when rst = '1' else control_signals.Flags_reset;
+    -- Successful jumps clear their respective flags
+    s_Flags_reset <= o"7" when rst = '1' else
+        o"4" when s_J_PC_SRC_CTRL = '1' and control_signals.JMP_flag = JMP_Z else
+        o"2" when s_J_PC_SRC_CTRL = '1' and control_signals.JMP_flag = JMP_N else
+        o"1" when s_J_PC_SRC_CTRL = '1' and control_signals.JMP_flag = JMP_C else
+    control_signals.Flags_reset;
+
     ff: entity work.Flags_File
     port map (
         clk => clk,
@@ -144,7 +152,8 @@ begin
         flags => s_Flags_file_ALU,
         is_J_type => control_signals.is_J_type,
         JMP_flag => control_signals.JMP_flag,
-        J_PC_SRC_CTRL => J_PC_SRC_CTRL
+        J_PC_SRC_CTRL => s_J_PC_SRC_CTRL
     );
+    J_PC_SRC_CTRL <= s_J_PC_SRC_CTRL;
 
 end main;

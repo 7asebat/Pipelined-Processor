@@ -74,10 +74,14 @@ BEGIN
         (OTHERS => 'U') WHEN OTHERS;
 
     instruction_memory : ENTITY work.Memory
+        GENERIC MAP(
+            n => MEM_SIZE,
+            m => 16
+        )
         PORT MAP(
             -- NOTE(Abdelrahman) no need to watch for a rising edge as this is a read-only memory
             clk => '0',
-            address => s_instruction_address(9 DOWNTO 0),
+            address => s_instruction_address(MEM_ADR_WIDTH-1 DOWNTO 0),
             data_out => s_IR,
             write_data => (OTHERS => '0'),
             mem_write => '0'
