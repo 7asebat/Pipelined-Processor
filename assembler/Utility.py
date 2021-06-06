@@ -1,4 +1,4 @@
-def pad_memory(Memory: dict[int, str]) -> list[str]:
+def pad_memory(Memory):
     padded_memory = [f'{0:016b}'] * (max(Memory.keys()) + 1)
 
     for i in sorted(Memory):
@@ -72,4 +72,3 @@ def build_lookup_table(filePath):
             table[string] = code
 
     return table
-
