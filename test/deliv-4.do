@@ -2,10 +2,13 @@ vsim work.Processor
 
 add wave -position 1  sim:/processor/clk
 add wave -position 2  sim:/processor/reset
-add wave -hex -position end sim:/processor/decode/reg_file/reg_file
-add wave -bin -position end sim:/processor/execute/ff/flags_out
-add wave -hex -position end  sim:/processor/IO_in
-add wave -hex -position end  sim:/processor/IO_out
+add wave -hex -position insertpoint sim:/processor/fetch/pc_controller/PC_value
+add wave -hex -position insertpoint sim:/processor/intreg_ifid/IR
+add wave -hex -position insertpoint sim:/processor/decode/reg_file/reg_file
+add wave -hex -position insertpoint sim:/processor/IO_in
+add wave -hex -position insertpoint sim:/processor/IO_out
+add wave -hex -position insertpoint sim:/processor/execute/ff/flags_out
+add wave -hex -position insertpoint sim:/processor/execute/spc/SP_out
 
 mem load -i test/deliv-4.mem -filltype value -filldata 0 /processor/fetch/instruction_memory/ram 
 
