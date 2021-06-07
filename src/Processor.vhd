@@ -88,8 +88,8 @@ BEGIN
     );
 
   -- TODO(Abdelrahman) Verify this
-  s_IFID_enable <= NOT s_ID_enable_n OR reset;
-  s_IFID_reset <= '0'; -- Keep on fetching
+  s_IFID_enable <= (NOT s_ID_enable_n) AND (NOT reset);
+  s_IFID_reset <= reset; -- Keep on fetching
   intreg_ifid : ENTITY work.Intreg_IF_ID
     PORT MAP(
       clk => clk,
@@ -133,10 +133,10 @@ BEGIN
   -- Flush the wrongly fetched and decoded instruction on valid jump
   s_IDEX_reset <= reset;
   s_IDEX_enable <= '1';
-  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL or s_ID_lw_reset
-                  or s_EX_control_signals.is_RET
-                  or s_MEM_control_signals.is_RET
-                  or s_WB_control_signals.is_RET;
+  s_IDEX_flush <= s_EX_J_PC_SRC_CTRL OR s_ID_lw_reset
+    OR s_EX_control_signals.is_RET
+    OR s_MEM_control_signals.is_RET
+    OR s_WB_control_signals.is_RET;
   intreg_idex : ENTITY work.Intreg_ID_EX
     PORT MAP(
       clk => clk,

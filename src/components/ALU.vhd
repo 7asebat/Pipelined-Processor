@@ -40,13 +40,13 @@ WITH S(3 DOWNTO 0) SELECT
   OpF <=  (OTHERS => '0')                                           WHEN "0000", -- CLR
           ('0' & not(OpB))                                          WHEN "0001", -- NOT OpB
           (std_logic_vector(unsigned('0' & OpB) + 1))               WHEN "0010", -- INC OpB
-          (std_logic_vector(unsigned('0' & OpB) - 1))               WHEN "0011", -- DEC OpB
+          (std_logic_vector(unsigned('0' & OpB) + x"FFFF_FFFF"))    WHEN "0011", -- DEC OpB
           (std_logic_vector(unsigned(not('0' & OpB)) + 1))          WHEN "0100", -- NEG OpB
           ('0' & OpB(WORD_SIZE-2 DOWNTO 0) & C_in)                  WHEN "0101", -- RLC OpB
           ('0' & C_in & OpB(WORD_SIZE-1 DOWNTO 1))                  WHEN "0110", -- RRC OpB
           ('0' & OpA)                                               WHEN "0111", -- MOV OpA, OpB
-          (std_logic_vector('0' & (unsigned(OpA) + unsigned(OpB)))) WHEN "1000", -- ADD OpA, OpB
-          (std_logic_vector('0' & (unsigned(OpA) - unsigned(OpB)))) WHEN "1001", -- SUB OpA, OpB
+          (std_logic_vector((unsigned('0' & OpA) + unsigned('0' & OpB)))) WHEN "1000", -- ADD OpA, OpB
+          (std_logic_vector((unsigned('0' & OpA) + unsigned('0' & not(OpB)) + 1))) WHEN "1001", -- SUB OpA, OpB
           ('0' & (OpA and OpB))                                     WHEN "1010", -- AND OpA, OpB
           ('0' & (OpA or OpB))                                      WHEN "1011", -- OR  OpA, OpB
           (std_logic_vector(shift_left(unsigned('0' & OpB), to_integer(unsigned(OpA)))))  WHEN "1100", -- SHL OpB, Imm
@@ -78,6 +78,8 @@ WITH S(3 DOWNTO 0) SELECT
             Z     WHEN "1001", -- SUB OpA, OpB
             Z     WHEN "1010", -- AND OpA, OpB
             Z     WHEN "1011", -- OR  OpA, OpB
+            Z     WHEN "0101", -- RLC OpB
+            Z     WHEN "0110", -- RRC OpB
           (Z_in) WHEN OTHERS;
 
 WITH S(3 DOWNTO 0) SELECT
@@ -89,6 +91,8 @@ WITH S(3 DOWNTO 0) SELECT
             N     WHEN "1001", -- SUB OpA, OpB
             N     WHEN "1010", -- AND OpA, OpB
             N     WHEN "1011", -- OR  OpA, OpB
+            N     WHEN "0101", -- RLC OpB
+            N     WHEN "0110", -- RRC OpB
           (N_in) WHEN OTHERS;
 
 WITH S(3 DOWNTO 0) SELECT
